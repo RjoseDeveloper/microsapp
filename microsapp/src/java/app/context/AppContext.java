@@ -19,13 +19,14 @@ public class AppContext implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("jmicrocreditosappPU");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("microsappPU");
         sce.getServletContext().setAttribute("emf", emf);
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-       EntityManagerFactory emf = (EntityManagerFactory) sce.getServletContext().getAttribute("emf");
-       emf.close();
+        EntityManagerFactory emf = (EntityManagerFactory) sce.getServletContext().getAttribute("emf");
+        emf.close();
+
     }
 }

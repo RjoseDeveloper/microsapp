@@ -14,10 +14,10 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>JSP Page</title>
+        <jsp:include page="../fragments/header_admin.jsp" />
     </head>
     <body class="animsition">
 
-        <jsp:include page="../fragments/header_admin.jsp" />
         <div class="page-container">
 
             <!-- MAIN CONTENT-->
@@ -149,7 +149,7 @@
 
                                                     </div>
                                                 </div>
-
+<!--
                                                 <div class="row form-group">
                                                     <div class="col col-md-4">
                                                         <label for="hf-email" class=" form-control-label">DATA DE PAGAMENTO:</label>
@@ -158,7 +158,7 @@
                                                         <input type="text" id="data" name=data readonly="" value="" class="form-control">
 
                                                     </div>
-                                                </div>
+                                                </div>-->
 
                                             </div>
 
@@ -173,6 +173,7 @@
                 </div>
             </div>
         </div>
+                                                                
         <jsp:include page="../modal/creditos.jsp"/>
         <script>
             $(document).ready(function () {

@@ -1,0 +1,21 @@
+﻿@{
+    try
+    {
+        var name = Request["Ship Name"];
+        var country = Request["Ship Country"];
+        var oDate = Request["Order Date"];
+        var shipped = (Request["Shipped"] == "true" ? true : false);
+        var db = Database.Open("Orders");
+        db.Execute(@"UPDATE Orders SET [Ship Name] = @0, [Ship Country] = @1,
+                [Order Date] = @2, [Shipped] = @3
+                WHERE [Order Id] = @4", name, country, oDate, shipped,
+                Request["Order Id"]);
+        var json = Json.Encode(new{Result = "OK"});
+        Response.Write(json);       
+    }
+    catch (Exception ex)
+    {
+        var json = Json.Encode(new{Result = "ERROR", Message = ex.Message});
+        Response.Write(json);
+    }
+}

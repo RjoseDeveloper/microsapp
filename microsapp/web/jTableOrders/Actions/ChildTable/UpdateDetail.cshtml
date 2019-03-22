@@ -1,0 +1,19 @@
+﻿@{
+    try
+    {
+        var name = Request["Product Name"];
+        var price = Request["Unit Price"];
+        var quant = Request["Quantity"];
+        var db = Database.Open("Orders");
+        db.Execute(@"UPDATE Details SET [Product Name] = @0, [Unit Price] = @1,
+                [Quantity] = @2 WHERE [Detail Id] = @3", name, price, quant,
+                Request["Detail Id"]);
+        var json = Json.Encode(new{Result = "OK"});
+        Response.Write(json);       
+    }
+    catch (Exception ex)
+    {
+        var json = Json.Encode(new{Result = "ERROR", Message = ex.Message});
+        Response.Write(json);
+    }
+}

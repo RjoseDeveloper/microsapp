@@ -1,0 +1,22 @@
+﻿@{
+    try
+    {
+        var name = Request["Ship Name"];
+        var country = Request["Ship Country"];
+        var oDate = Request["Order Date"];
+        var shipped = (Request["Shipped"] == "true" ? true : false);
+        var db = Database.Open("Orders");
+        db.Execute(@"INSERT INTO Orders ([Ship Name], [Ship Country], [Order Date],
+                [Shipped]) 
+                VALUES (@0, @1, @2, @3)", name, country, oDate, shipped);
+        var order = db.QuerySingle("SELECT * FROM Orders WHERE [Order Id] = @0",
+                db.GetLastInsertId());
+        var json = Json.Encode(new{Result = "OK", Record = order});
+        Response.Write(json);       
+    }
+    catch (Exception ex)
+    {
+        var json = Json.Encode(new{Result = "ERROR", Message = ex.Message});
+        Response.Write(json);
+    }
+}

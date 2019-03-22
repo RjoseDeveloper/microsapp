@@ -105,7 +105,7 @@ public class UsersController extends HttpServlet {
 
             new ClienteJpaController(emf).create(cliente);
             System.out.println("Cliente Created: "+cliente.toString());
-            response.sendRedirect("/jmicrocreditosapp/tamplates/success.jsp");
+            response.sendRedirect("/microsapp/tamplates/success.jsp");
 
 //        if(request.getParameter("func").equals("")){}  
 //        

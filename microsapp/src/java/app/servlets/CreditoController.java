@@ -80,7 +80,7 @@ public class CreditoController extends HttpServlet {
                 credito.setDataPagamento(date_pag);
 
                 new CreditoJpaController(emf).create(credito);
-                 //response.sendRedirect("/jmicrocreditosapp/tamplates/success.jsp");
+                 //response.sendRedirect("/microsapp/tamplates/success.jsp");
 
             } catch (ParseException e) {
                 e.printStackTrace();
@@ -110,7 +110,7 @@ public class CreditoController extends HttpServlet {
                 creditoconsumo.setNomebanco(request.getParameter("banco"));
 
                 new CreditoconsumoJpaController(emf).create(creditoconsumo);
-                 response.sendRedirect("/jmicrocreditosapp/tamplates/success.jsp");
+                 response.sendRedirect("/microsapp/tamplates/success.jsp");
 
             }
             if (destino == 2) {
@@ -122,7 +122,7 @@ public class CreditoController extends HttpServlet {
                 creditonegocio.setTestemunha2(request.getParameter("testemunha2"));
                 creditonegocio.setUrldeclaracao(request.getParameter("decbairro"));
                 new CreditonegocioJpaController(emf).create(creditonegocio);
-                 response.sendRedirect("/jmicrocreditosapp/tamplates/success.jsp");
+                 response.sendRedirect("/microsapp/tamplates/success.jsp");
 
             }
             if (destino == 3) {
@@ -135,7 +135,7 @@ public class CreditoController extends HttpServlet {
                 penhor.setUrlimovel(request.getParameter("urldecimovel"));
 
                 new CreditopenhorJpaController(emf).create(penhor);
-                 response.sendRedirect("/jmicrocreditosapp/tamplates/success.jsp");
+                 response.sendRedirect("/microsapp/tamplates/success.jsp");
 
             }
         }

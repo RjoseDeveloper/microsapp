@@ -9,7 +9,6 @@
 <%@page import="app.model.Credito"%>
 <%@page import="java.util.List"%>
 <%@page import="app.controller.CreditoJpaController"%>
-<%@page import="sun.awt.AppContext"%>
 <%@page import="javax.persistence.EntityManagerFactory"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -33,7 +32,7 @@
             <!-- END WELCOME-->
 
             <%
-                EntityManagerFactory emf = new app.context.AppContext().getAppContext();
+                EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
 
                 List<Credito> creditos = new CreditoJpaController(emf).findCreditoEntities();
                 int paid = 0, not_paid = 0;
@@ -235,8 +234,7 @@
             </section>
 
             <jsp:include page="../modal/creditos.jsp"/>
-            <jsp:include page="../modal/instituicao.jsp"/>
-
+            
         </div>
     </body>
 

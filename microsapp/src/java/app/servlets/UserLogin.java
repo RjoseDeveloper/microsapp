@@ -79,7 +79,7 @@ public class UserLogin extends HttpServlet {
                        response.sendRedirect("/app/tamplates/utente.jsp");
                     }
                     if (user1.getRoleId().getRole().equals("CLIENT")) {
-                        response.sendRedirect("/app/tamplates/client.jsp");
+                        response.sendRedirect("/microsapp/tamplates/client.jsp");
                     }
                 }
             }

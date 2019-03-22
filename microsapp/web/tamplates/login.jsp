@@ -29,7 +29,7 @@
                         </div>
 
                         <div class="login-form">
-                            <form action="/jmicrocreditosapp/UserLogin" method="post">
+                            <form action="/microsapp/UserLogin" method="post">
 
                                 <div class="form-group">
                                     <label>Correio Electronico</label>

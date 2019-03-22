@@ -53,7 +53,7 @@
                             </div>
 
                             <div class="login-form">
-                                <form action="/jmicrocreditosapp/UsersController" method="post" novalidate="novalidate">
+                                <form action="/microsapp/UsersController" method="post" novalidate="novalidate">
 
                                     <div class="row">
                                         <div class="col-6">

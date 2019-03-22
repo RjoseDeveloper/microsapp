@@ -1,0 +1,15 @@
+﻿@{
+    try
+    {
+        System.Threading.Thread.Sleep(50);
+        var db = Database.Open("Orders");
+        db.Execute("DELETE FROM Details WHERE [Detail Id] = @0", Request["Detail Id"]);
+        var json = Json.Encode(new{Result = "OK"});
+        Response.Write(json);       
+    }
+    catch (Exception ex)
+    {
+        var json = Json.Encode(new{Result = "ERROR", Message = ex.Message});
+        Response.Write(json);
+    }
+}
