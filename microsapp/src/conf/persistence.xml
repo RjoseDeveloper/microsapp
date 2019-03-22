@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="microsappPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>app.model.Sexo</class>
+    <class>app.model.Distrito</class>
+    <class>app.model.Role</class>
+    <class>app.model.Provincia</class>
+    <class>app.model.Creditovip</class>
+    <class>app.model.Modopagamento</class>
+    <class>app.model.Tipocredito</class>
+    <class>app.model.Creditopenhor</class>
+    <class>app.model.Instituicao</class>
+    <class>app.model.Estado</class>
+    <class>app.model.Estadocivil</class>
+    <class>app.model.Creditoconsumo</class>
+    <class>app.model.Credito</class>
+    <class>app.model.Cliente</class>
+    <class>app.model.Funcionario</class>
+    <class>app.model.Creditonegocio</class>
+    <class>app.model.Historicopagamento</class>
+    <class>app.model.User</class>
+    <class>app.model.Grupoalvo</class>
+    <class>app.model.Profile</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/jmicrocreditos"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+      <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+      <property name="javax.persistence.jdbc.password" value="dblinkx"/>
+    </properties>
+  </persistence-unit>
+</persistence>
