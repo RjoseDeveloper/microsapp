@@ -71,12 +71,12 @@ public class UserLogin extends HttpServlet {
                     status = true;
                     
                      if (user1.getRoleId().getRole().equals("ADMIN")) {
-                        response.sendRedirect("/app/tamplates/admin.jsp");
+                        response.sendRedirect("/microsapp/tamplates/admin.jsp");
                        
                     } else {
                     }
                     if (user1.getRoleId().getRole().equals("STANDARD")) {
-                       response.sendRedirect("/app/tamplates/utente.jsp");
+                       response.sendRedirect("/microsapp/tamplates/utente.jsp");
                     }
                     if (user1.getRoleId().getRole().equals("CLIENT")) {
                         response.sendRedirect("/microsapp/tamplates/client.jsp");

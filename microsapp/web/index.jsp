@@ -196,7 +196,11 @@
                                 Funcionários do Estado</li><li class="list-group-item">Reformados do Estado</li><li class="list-group-item">Antigos Combatentes</li><li class="list-group-item">Funcionarios das Empresas com participação do Estado</li>
                         </ul>
                     </div>
-                    <div class="mbr-section-btn text-center py-4 pb-5"><a href="index.jsp#features18-1o" class="btn btn-primary-outline display-4">ADERIR</a></div>
+                    <>
+                    <div class="mbr-section-btn text-center py-4 pb-5">
+                        <a href="index.jsp#features18-1o" class="btn btn-primary-outline display-4">ADERIR</a></div>
+                
+                
                 </div>
             </div>
 

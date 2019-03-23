@@ -8,9 +8,17 @@
         <servlet-name>GetJson</servlet-name>
         <servlet-class>app.servlets.GetJson</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CRUDController</servlet-name>
+        <servlet-class>app.servlets.CRUDController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GetJson</servlet-name>
         <url-pattern>/GetJson</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CRUDController</servlet-name>
+        <url-pattern>/CRUDController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>90</session-timeout>

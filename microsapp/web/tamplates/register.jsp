@@ -4,6 +4,8 @@
     Author     : Raimundo Jose
 --%>
 
+<%@page import="app.model.Role"%>
+<%@page import="app.controller.RoleJpaController"%>
 <%@page import="app.controller.InstituicaoJpaController"%>
 <%@page import="app.model.Instituicao"%>
 <%@page import="app.controller.EstadocivilJpaController"%>
@@ -162,16 +164,27 @@
                                         <span class="help-block" data-valmsg-for="endereco1" data-valmsg-replace="true"></span>
                                     </div>
 
+                                    <%
+                                        if (session.getAttribute("role_name").equals("ADMIN")) {
+                                    %>
+
                                     <div class="form-group">
                                         <div class="form-group">
-                                            <label for="endereco2" class="control-label mb-1">Endereco 2:</label>
-                                            <input id="endereco2" name="endereco2" type="text"
-                                                   class="form-control endereco2 identified visa" value="" data-val="false"
-                                                   data-val-required="Insira o endereço" autocomplete="endereco2">
-                                            <span class="help-block" data-valmsg-for="endereco1"
-                                                  data-valmsg-replace="true"></span>
+                                            <label for="endereco2" class="control-label mb-1">Previlegio:</label>
+                                            <select class="form-control" id="role_id" name="role_id">
+                                                <%
+                                                    List<Role> roles = new RoleJpaController(emf).findRoleEntities();
+                                                    for (Role r : roles) {
+
+                                                %>
+                                                <option value="<%= r.getRoleId()%>"><%= r.getRole()%></option>
+
+                                                <% }%>
+
+                                            </select>
                                         </div>
                                     </div>
+                                    <% } %>
 
 
                                     <div class="row">

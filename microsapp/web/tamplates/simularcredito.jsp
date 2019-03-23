@@ -77,7 +77,7 @@
                                                                 <label for="juro" class=" form-control-label">Taxa de Juro</label>
                                                             </div>
                                                             <div class="col-12 col-md-8">
-                                                                <input type="text" id="juro" name="juro"  class="form-control">
+                                                                <input type="text" id="juro" name="juro" readonly=""  class="form-control">
 
                                                             </div>
                                                         </div>
@@ -149,16 +149,16 @@
 
                                                     </div>
                                                 </div>
-<!--
-                                                <div class="row form-group">
-                                                    <div class="col col-md-4">
-                                                        <label for="hf-email" class=" form-control-label">DATA DE PAGAMENTO:</label>
-                                                    </div>
-                                                    <div class="col-12 col-md-8">
-                                                        <input type="text" id="data" name=data readonly="" value="" class="form-control">
-
-                                                    </div>
-                                                </div>-->
+                                                <!--
+                                                                                                <div class="row form-group">
+                                                                                                    <div class="col col-md-4">
+                                                                                                        <label for="hf-email" class=" form-control-label">DATA DE PAGAMENTO:</label>
+                                                                                                    </div>
+                                                                                                    <div class="col-12 col-md-8">
+                                                                                                        <input type="text" id="data" name=data readonly="" value="" class="form-control">
+                                                
+                                                                                                    </div>
+                                                                                                </div>-->
 
                                             </div>
 
@@ -173,10 +173,12 @@
                 </div>
             </div>
         </div>
-                                                                
+
         <jsp:include page="../modal/creditos.jsp"/>
         <script>
             $(document).ready(function () {
+
+
 
                 $('#btn_simular').click(function () {
 
@@ -202,15 +204,25 @@
             function _dados_credits(item) {
 
                 $.ajax({
-                    url: "/jmicrocreditosapp/GetJson",
-                    data: {acao: 2, param: item},
-                    dataType: "json",
+                    
+                    url: "/microsapp/GetJson",
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {acao: 1, idtipocredito: item},
+                    contentType: 'application/json',
+                    mimeType: 'application/json',
                     success: function (data) {
+                        
                         $('#juro').val(data.juro);
                         $('#qtdmes').val(data.pgto);
-                        $('#pgto').val(data.pgto).css('color', 'red');
+                        $('#pgto').html('PGTO Maximo: '+data.pgto).css('color','red');
+
+                    },
+                    error: function (data, status, er) {
+                        alert("error: " + data + " status: " + status + " er:" + er);
                     }
                 });
+
 
             }
         </script>

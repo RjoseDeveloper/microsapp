@@ -14,6 +14,7 @@ import app.model.Estadocivil;
 import app.model.Instituicao;
 import app.model.Provincia;
 import app.model.Role;
+import static app.model.Role_.role;
 import app.model.Sexo;
 import app.model.Tipocredito;
 import app.model.User;
@@ -33,6 +34,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -57,7 +59,7 @@ public class UsersController extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
 
             EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
-
+            HttpSession session = request.getSession();
 
             String nome = (String) request.getParameter("nome");
             String apelido = (String) request.getParameter("apelido");
@@ -69,10 +71,13 @@ public class UsersController extends HttpServlet {
             String idestadocivil = (String) request.getParameter("estadocivil");
             String iddistrito = (String) request.getParameter("distrito");
             String linhaendereco1 = (String) request.getParameter("endereco1");
-            String linhaendereco2 = (String) request.getParameter("endereco2");
+            String linhaendereco2 = null;
             String password = (String) request.getParameter("password");
-            int role = 3;
-
+            int role_id = 3;
+            
+            if (session.getAttribute("role_name").equals("ADMIN")){  
+              role_id = Integer.parseInt(request.getParameter("role_id"));
+            }
             User user = new User();
 
             user.setName(nome);
@@ -84,7 +89,7 @@ public class UsersController extends HttpServlet {
             Date d = new Date();
             //LocalDateTime d = LocalDateTime;
             user.setDataAdded(new Date());
-            user.setRoleId(new Role(role));
+            user.setRoleId(new Role(role_id));
             new UserJpaController(emf).create(user);
             System.out.println("User Created: "+user.toString());
 

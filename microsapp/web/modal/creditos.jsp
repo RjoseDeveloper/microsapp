@@ -272,7 +272,7 @@
                                     <div class="modal-footer">
                                         <!--<button type="reset" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>-->
                                         <!---->
-                                        <button type="submit" class="btn btn-primary">Enviar Pedido</button>
+                                        <button type="submit" class="btn btn-primary">Guardar Pedido</button>
                                     </div>
                                 </form>
                             </div>
