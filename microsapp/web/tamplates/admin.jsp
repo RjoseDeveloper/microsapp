@@ -4,6 +4,9 @@
     Author     : Raimundo Jose
 --%>
 
+<%@page import="java.text.Format"%>
+<%@page import="java.text.NumberFormat"%>
+<%@page import="java.util.Locale"%>
 <%@page import="app.controller.ClienteJpaController"%>
 <%@page import="app.methods.Functions"%>
 <%@page import="app.model.Credito"%>
@@ -18,6 +21,10 @@
         <title>Admin</title>
     </head>
 
+    <%
+        if (session.getAttribute("username") != null) {
+    %>
+
     <body class="animsition">
 
         <jsp:include page="../fragments/header_admin.jsp" />
@@ -26,25 +33,26 @@
 
             <!-- END WELCOME-->
             <section class="au-breadcrumb-content">
-              <br> <br> <br>
+                <br> <br> <br>
             </section>
 
             <!-- END WELCOME-->
 
-            <%
+            <%            
                 EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
-
+                
                 List<Credito> creditos = new CreditoJpaController(emf).findCreditoEntities();
+                NumberFormat format = NumberFormat.getCurrencyInstance(Locale.getDefault());
                 int paid = 0, not_paid = 0;
                 for (Credito c : creditos) {
-
+                    
                     if (c.getIdestado().getIdestado() == 2L) {
                         paid++;
                     } else {
                         not_paid++;
                     }
                 }
-
+                
 
             %>
             <!-- STATISTIC-->
@@ -108,28 +116,28 @@
                                         <tbody>
                                             <tr>
                                                 <td>Credito ao Consumo</td>
-                                                <td><%= new Functions().getSomaCredito(1, 1,1) %></td>
+                                                <td><%=format.format(new Functions().getSomaCredito(1, 1))%></td>
                                             </tr>
                                             <tr>
                                                 <td>Credito para Negocio</td>
-                                                <td><%= new Functions().getSomaCredito(2, 1,1) %></td>
+                                                <td><%=format.format(new Functions().getSomaCredito(2, 1))%></td>
                                             </tr>
                                             <tr>
                                                 <td>Credito pela Penhor</td>
-                                                <td><%= new Functions().getSomaCredito(3, 1,1) %></td>
-                                                
+                                                <td><%=format.format(new Functions().getSomaCredito(3, 1))%></td>
+
                                             </tr>
                                             <tr>
                                                 <td>Credito VIP</td>
-                                                <td><%= new Functions().getSomaCredito(4, 1,1) %></td>
+                                                <td><%=format.format(new Functions().getSomaCredito(4, 1))%></td>
                                             </tr>
-                                            
+
                                             <tr class="alert-dark">
                                                 <td>Total</td>
-                                                <td><%= new Functions().getSomaCredito(1, 1,1) +
-                                                        new Functions().getSomaCredito(2, 1,1) +
-                                                new Functions().getSomaCredito(3, 1,1)+
-                                                new Functions().getSomaCredito(4, 1,1) %></td>
+                                                <td><%=format.format(new Functions().getSomaCredito(1, 1)
+                                                        + new Functions().getSomaCredito(2, 1)
+                                                        + new Functions().getSomaCredito(3, 1)
+                                                        + new Functions().getSomaCredito(4, 1))%></td>
                                             </tr>
 
                                         </tbody>
@@ -139,14 +147,14 @@
                             <!-- END TOP CAMPAIGN-->
                         </div>
 
-<!--                        <div class="col-lg-4">
-                            <div class="au-card m-b-30">
-                                <div class="au-card-inner">
-                                    <h3 class="title-2 m-b-40">Evolução Mensal</h3>
-                                    <canvas id="singelBarChart"></canvas>
-                                </div>
-                            </div>
-                        </div>-->
+                        <!--                        <div class="col-lg-4">
+                                                    <div class="au-card m-b-30">
+                                                        <div class="au-card-inner">
+                                                            <h3 class="title-2 m-b-40">Evolução Mensal</h3>
+                                                            <canvas id="singelBarChart"></canvas>
+                                                        </div>
+                                                    </div>
+                                                </div>-->
 
                         <div class="col-md-5 col-lg-4">
                             <!-- TOP CAMPAIGN-->
@@ -157,28 +165,28 @@
                                         <tbody>
                                             <tr>
                                                 <td>Credito ao Consumo</td>
-                                                <td><%= new Functions().getSomaCredito(1, 1,2) %></td>
+                                                <td><%=format.format(new Functions().getSomaCredito(1, 2))%></td>
                                             </tr>
                                             <tr>
                                                 <td>Credito para Negocio</td>
-                                                <td><%= new Functions().getSomaCredito(2, 1,2) %></td>
+                                                <td><%=format.format(new Functions().getSomaCredito(2, 2))%></td>
                                             </tr>
                                             <tr>
                                                 <td>Credito pela Penhor</td>
-                                                <td><%= new Functions().getSomaCredito(3, 1,2) %></td>
-                                                
+                                                <td><%=format.format(new Functions().getSomaCredito(3, 2))%></td>
+
                                             </tr>
                                             <tr>
                                                 <td>Credito VIP</td>
-                                                <td><%= new Functions().getSomaCredito(4, 1,2) %></td>
+                                                <td><%=format.format(new Functions().getSomaCredito(4, 2))%></td>
                                             </tr>
-                                            
+
                                             <tr class="alert-dark">
                                                 <td>Total</td>
-                                                <td><%= new Functions().getSomaCredito(1, 1,2) +
-                                                        new Functions().getSomaCredito(2, 1,2) +
-                                                new Functions().getSomaCredito(3, 1,2)+
-                                                new Functions().getSomaCredito(4, 1,2) %></td>
+                                                <td><%=format.format(new Functions().getSomaCredito(1, 2)
+                                                        + new Functions().getSomaCredito(2, 2)
+                                                        + new Functions().getSomaCredito(3, 2)
+                                                        + new Functions().getSomaCredito(4, 2))%></td>
                                             </tr>
 
                                         </tbody>
@@ -195,30 +203,30 @@
                                 <div class="table-responsive">
                                     <table class="table table-top-campaign">
                                         <tbody>
-                                             <tr>
+                                            <tr>
                                                 <td>Credito ao Consumo</td>
-                                                <td><%= new Functions().getSomaCredito(1, 1,5) %></td>
+                                                <td><%=format.format(new Functions().getSomaCredito(1, 3))%></td>
                                             </tr>
                                             <tr>
                                                 <td>Credito para Negocio</td>
-                                                <td><%= new Functions().getSomaCredito(2, 1,5) %></td>
+                                                <td><%=format.format(new Functions().getSomaCredito(2, 3))%></td>
                                             </tr>
                                             <tr>
                                                 <td>Credito pela Penhor</td>
-                                                <td><%= new Functions().getSomaCredito(3, 1,5) %></td>
-                                                
+                                                <td><%=format.format(new Functions().getSomaCredito(3, 3))%></td>
+
                                             </tr>
                                             <tr>
                                                 <td>Credito VIP</td>
-                                                <td><%= new Functions().getSomaCredito(4, 1,5) %></td>
+                                                <td><%=format.format(new Functions().getSomaCredito(4, 3))%></td>
                                             </tr>
-                                            
+
                                             <tr class="alert-dark">
                                                 <td>Total</td>
-                                                <td><%= new Functions().getSomaCredito(1, 1,5) +
-                                                        new Functions().getSomaCredito(2, 1,5) +
-                                                new Functions().getSomaCredito(3, 1,5)+
-                                                new Functions().getSomaCredito(4, 1,5) %></td>
+                                                <td><%=format.format(new Functions().getSomaCredito(1, 3)
+                                                        + new Functions().getSomaCredito(2, 3)
+                                                        + new Functions().getSomaCredito(3, 3)
+                                                        + new Functions().getSomaCredito(4, 3))%></td>
                                             </tr>
 
                                         </tbody>
@@ -237,5 +245,9 @@
             
         </div>
     </body>
+
+    <% } else {
+            response.sendRedirect("../tamplates/login.jsp");
+        }%>
 
 </html>

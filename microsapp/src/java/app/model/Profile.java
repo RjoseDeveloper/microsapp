@@ -59,10 +59,6 @@ public class Profile implements Serializable {
     public Profile() {
     }
 
-    public Profile(Integer idprofile) {
-        this.idprofile = idprofile;
-    }
-
     public Profile(Integer idprofile, String instituicao, String nomefantasia, String gestor, String contacto, String ulrimagem, String email, String endereco) {
         this.idprofile = idprofile;
         this.instituicao = instituicao;
@@ -72,6 +68,12 @@ public class Profile implements Serializable {
         this.ulrimagem = ulrimagem;
         this.email = email;
         this.endereco = endereco;
+    }
+
+
+
+    public Profile(Integer idprofile) {
+        this.idprofile = idprofile;
     }
 
     public Integer getIdprofile() {

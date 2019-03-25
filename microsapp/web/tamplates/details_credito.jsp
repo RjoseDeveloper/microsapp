@@ -1,6 +1,6 @@
 <%-- 
-    Document   : creditos
-    Created on : Mar 22, 2019, 9:01:06 PM
+    Document   : details_credito
+    Created on : Mar 24, 2019, 12:02:48 PM
     Author     : Raimundo Jose
 --%>
 

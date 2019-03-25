@@ -36,7 +36,8 @@
                             
                             <hr>
                             
-                            <div class="pull-right"><a class="btn btn-info" href="login.jsp">Entrar no Sistema?</a></div>
+                            <div class="pull-right"><a class="btn btn-info" href="#" onclick="back_to_login()">Entrar no Sistema?</a></div>
+                            <div class="pull-left"><a class="" href="../index.jsp" ><< Home</a></div>
 
                             <br>
                         </div>

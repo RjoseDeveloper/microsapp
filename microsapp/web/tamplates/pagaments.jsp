@@ -9,8 +9,15 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Pagamentos</title>
+              <%
+            if (request.getParameter("user_role").equals("ADMIN") ||
+            request.getParameter("user_role").equals("STANDARD")) {%>
         <jsp:include page="../fragments/header_cliente.jsp"/>
+        <%} else {%>
+
+        <jsp:include page="../fragments/header_cliente.jsp"/>
+        <% }%>
     </head>
  
         <body class="animsition">

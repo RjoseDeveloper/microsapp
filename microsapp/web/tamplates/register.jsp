@@ -300,10 +300,14 @@
                                     </button>
 
                                     <div class="register-link">
-                                        <p> Já Esta registado?
+                                        <p class="pull-left"> Já Esta registado?
                                             <a href="login.jsp">Login</a>
                                         </p>
+                                         </p>
+                                <p class="pull-right"><a href="#" style="color: blue" onclick="history.go(-1)"><< Regressar </a></p>
+                            
                                     </div>
+                                                        <br>
 
                                 </form>
                             </div>
@@ -314,8 +318,7 @@
 
             <jsp:include page="../layouts/_footer.html"/>
 
-
         </div>
-    </th:block>
+ 
 </body>
 </html>

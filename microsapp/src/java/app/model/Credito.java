@@ -76,11 +76,6 @@ public class Credito implements Serializable {
     @JoinColumn(name = "idcliente", referencedColumnName = "idcliente", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Cliente idcliente;
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "credito1", fetch = FetchType.LAZY)
-    private Credito credito;
-    @JoinColumn(name = "idcredito", referencedColumnName = "idcredito", nullable = false, insertable = false, updatable = false)
-    @OneToOne(optional = false, fetch = FetchType.LAZY)
-    private Credito credito1;
     @JoinColumn(name = "idestado", referencedColumnName = "idestado")
     @ManyToOne(fetch = FetchType.LAZY)
     private Estado idestado;
@@ -191,22 +186,6 @@ public class Credito implements Serializable {
 
     public void setIdcliente(Cliente idcliente) {
         this.idcliente = idcliente;
-    }
-
-    public Credito getCredito() {
-        return credito;
-    }
-
-    public void setCredito(Credito credito) {
-        this.credito = credito;
-    }
-
-    public Credito getCredito1() {
-        return credito1;
-    }
-
-    public void setCredito1(Credito credito1) {
-        this.credito1 = credito1;
     }
 
     public Estado getIdestado() {

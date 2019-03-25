@@ -9,19 +9,27 @@ import app.controller.CreditoJpaController;
 import app.controller.CreditoconsumoJpaController;
 import app.controller.CreditonegocioJpaController;
 import app.controller.CreditopenhorJpaController;
+import app.controller.CreditovipJpaController;
+import app.controller.HistoricopagamentoJpaController;
+import app.controller.TipocreditoJpaController;
 import app.model.Cliente;
 import app.model.Credito;
 import app.model.Creditoconsumo;
 import app.model.CreditoconsumoPK;
 import app.model.Creditonegocio;
 import app.model.Creditopenhor;
+import app.model.Creditovip;
 import app.model.Estado;
+import app.model.Historicopagamento;
 import app.model.Instituicao;
+import app.model.Modopagamento;
 import app.model.Tipocredito;
+import static app.model.User_.userId;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -53,52 +61,72 @@ public class CreditoController extends HttpServlet {
             throws ServletException, IOException, Exception {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-
+            
             EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
             Credito credito = new Credito();
-
-            HttpSession session = request.getSession();
-            System.out.println("ID USR: "+session.getAttribute("iduser"));
-            int userId = (int) session.getAttribute("iduser");
             
+            HttpSession session = request.getSession();
+            //System.out.println("ID USR: " + session.getAttribute("iduser"));
+            String userid =  session.getAttribute("iduser").toString();
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            int PGTO = 2, STATUS = 1;
+             Calendar cal = Calendar.getInstance();
+            
             String status = "1";
             int destino = Integer.parseInt(request.getParameter("destino"));
-
+            
             try {
-
-                Date date_emp = formatter.parse(request.getParameter("dataemp"));
-                Date date_pag = formatter.parse(request.getParameter("datapag"));
-                credito.setValor(Double.parseDouble(request.getParameter("montante")));
-
+                
+                Tipocredito tipo = new TipocreditoJpaController(emf).findTipocredito(destino);
+                int modopay = Integer.parseInt(request.getParameter("modopay"));
+                double valor = Double.parseDouble(request.getParameter("montante"));
+                
+                double pgto_r = valor /tipo.getPgto() ;
+                double juro = valor * (tipo.getPgto() / 100);
+                double tjuro = pgto_r + juro;
+                int day_in_month = 30;
+                
+                Date date_emp = formatter.parse(request.getParameter("datai"));
+                Date date_pag = formatter.parse(request.getParameter("dataf"));
+                
+                credito.setValor(tjuro * tipo.getPgto());
                 credito.setIdtipocredito(new Tipocredito(destino));
-                credito.setIdcliente(new Cliente(userId));
-                credito.setNrMaxPag(PGTO);
+                Cliente c = new Cliente();
+                c.setIdcliente(Integer.parseInt(userid));
+                credito.setIdcliente(c);
+                credito.setNrMaxPag(tipo.getPgto());
                 credito.setIdestado(new Estado(Long.parseLong(status)));
                 credito.setDataEmprestimo(date_emp);
                 credito.setDataPagamento(date_pag);
-
+                
                 new CreditoJpaController(emf).create(credito);
-                 //response.sendRedirect("/microsapp/tamplates/success.jsp");
-
+                 
+                
+                for (int i = 0; i < tipo.getPgto(); i++) {
+                    
+                    cal.add(Calendar.DATE, day_in_month);
+                    String di = formatter.format(cal.getTime());
+                    
+                    Historicopagamento h = new Historicopagamento();
+                    h.setIdcredito(credito);
+                    h.setIdmodopagamento(new Modopagamento(modopay));
+                    h.setOrdem(i+1);
+                    h.setValor(pgto_r + juro);
+                    h.setData(formatter.parse(di));
+                    new HistoricopagamentoJpaController(emf).create(h);
+                }
+                
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
+            
             if (destino == 1) {
-
+                
                 System.out.println("Novo IdCreditos:" + credito.getIdcredito());
-
+                
                 Creditoconsumo creditoconsumo = new Creditoconsumo();
                 Instituicao instituicao = new Instituicao();
-                instituicao.setIdinstituicao(1);
-
-                CreditoconsumoPK creditoconsumoPK = new CreditoconsumoPK();
-                creditoconsumoPK.setIdcredito(credito.getIdcredito().shortValue());
-                creditoconsumoPK.setIdinstituicao(instituicao.getIdinstituicao().shortValue());
-
-                creditoconsumo.setCreditoconsumoPK(creditoconsumoPK);
+                instituicao.setIdinstituicao(Integer.parseInt(request.getParameter("instituicao")));
+             
                 creditoconsumo.setFuncao(request.getParameter("funcao"));
                 creditoconsumo.setContactogestor(request.getParameter("contactBoss"));
                 creditoconsumo.setTitularconta(request.getParameter("titular"));
@@ -108,13 +136,20 @@ public class CreditoController extends HttpServlet {
                 creditoconsumo.setUrldeclaracaoservico(request.getParameter("declaracaoServico"));
                 creditoconsumo.setUrloutro(request.getParameter("penhor"));
                 creditoconsumo.setNomebanco(request.getParameter("banco"));
-
+                creditoconsumo.setCredito(credito);
+                creditoconsumo.setInstituicao(instituicao);
+                
+                CreditoconsumoPK ck = new CreditoconsumoPK();
+                ck.setIdcredito(creditoconsumo.getCredito().getIdcredito().shortValue());
+                ck.setIdinstituicao(creditoconsumo.getInstituicao().getIdinstituicao().shortValue());
+                creditoconsumo.setCreditoconsumoPK(ck);
+                
                 new CreditoconsumoJpaController(emf).create(creditoconsumo);
-                 response.sendRedirect("/microsapp/tamplates/success.jsp");
-
+                response.sendRedirect("/microsapp/tamplates/success.jsp");
+                
             }
             if (destino == 2) {
-
+                
                 Creditonegocio creditonegocio = new Creditonegocio();
                 creditonegocio.setBem(request.getParameter("bempenhor"));
                 creditonegocio.setIdcredito(credito.getIdcredito().shortValue());
@@ -122,21 +157,34 @@ public class CreditoController extends HttpServlet {
                 creditonegocio.setTestemunha2(request.getParameter("testemunha2"));
                 creditonegocio.setUrldeclaracao(request.getParameter("decbairro"));
                 new CreditonegocioJpaController(emf).create(creditonegocio);
-                 response.sendRedirect("/microsapp/tamplates/success.jsp");
-
+                response.sendRedirect("/microsapp/tamplates/success.jsp");
+                
             }
             if (destino == 3) {
-
+                
                 Creditopenhor penhor = new Creditopenhor();
                 System.out.println("Creditos: [enhor: " + credito.getIdcredito());
-
+                
                 penhor.setIdcredito(credito.getIdcredito());
                 penhor.setUrldecpenhor(request.getParameter("urldecimovel"));
                 penhor.setUrlimovel(request.getParameter("urldecimovel"));
-
+                
                 new CreditopenhorJpaController(emf).create(penhor);
-                 response.sendRedirect("/microsapp/tamplates/success.jsp");
-
+                response.sendRedirect("/microsapp/tamplates/success.jsp");
+                
+            }
+            if (destino == 4) {
+                
+                Creditovip vip = new Creditovip();
+                System.out.println("Creditos: [enhor: " + credito.getIdcredito());
+                
+                vip.setIdcredito(credito.getIdcredito());
+                vip.setCredor(request.getParameter("credor"));
+                vip.setUrldeclaracaohonra(request.getParameter("urldechonra"));
+                
+                new CreditovipJpaController(emf).create(vip);
+                response.sendRedirect("/microsapp/tamplates/success.jsp");
+                
             }
         }
     }

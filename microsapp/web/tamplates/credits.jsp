@@ -4,30 +4,21 @@
     Author     : Raimundo Jose
 --%>
 
-<%@page import="java.text.NumberFormat"%>
-<%@page import="java.util.Locale"%>
-<%@page import="app.model.Credito"%>
-<%@page import="app.controller.CreditoJpaController"%>
-<%@page import="java.text.SimpleDateFormat"%>
-<%@page import="app.model.Cliente"%>
-<%@page import="java.util.List"%>
-<%@page import="java.util.List"%>
-<%@page import="javax.persistence.EntityManagerFactory"%>
-<%@page import="app.controller.ClienteJpaController"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Cliente</title>
+        <title>CREDITOS</title>
         <%
-            if (session.getAttribute("role_name").equals("ADMIN") || session.getAttribute("role_name").equals("STANDARD")) {%>
-        <jsp:include page="../fragments/header_admin.jsp"/>
+            if (request.getParameter("user_role").equals("ADMIN") ||
+            request.getParameter("user_role").equals("STANDARD")) {%>
+            <jsp:include page="../fragments/header_admin.jsp"/>
         <%} else {%>
 
         <jsp:include page="../fragments/header_cliente.jsp"/>
         <% }%>
-
+        
     </head>
     <body class="animsition">
 
@@ -42,12 +33,23 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="pull-left">
-                                    Sistema de Gestao de Creditos
+                                    logo image of money
                                 </div>
                             </div>
                         </div>
                     </div>
                 </section>
+
+                <div class="container">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 style="color: #ff182b">Lista de Creditos</h3>
+                            <hr class="line-seprate">
+                        </div>
+                    </div>
+
+                </div>
 
                 <!-- END WELCOME-->
 
@@ -59,7 +61,7 @@
 
                             <div class="col-md-6 col-lg-4">
                                 <div class="statistic__item statistic__item--green">
-                                    <h2 class="number">15.9999</h2>
+                                    <h2 class="number">10,368</h2>
                                     <span class="desc">TOTAL EMPRESTIMOS PAGOS</span>
                                     <div class="icon">
                                         <i class="zmdi zmdi-account-o"></i>
@@ -97,7 +99,7 @@
                 <!-- END STATISTIC CHART-->
 
                 <!-- DATA TABLE-->
-                <section class="p-t-60">
+                <section class="p-t-20">
                     <div class="container">
                         <div class="row">
                             <div class="col-md-12">
@@ -122,88 +124,94 @@
 
                                         <a href="#" class="au-btn au-btn-icon btn_modal_credits au-btn--green au-btn--small"
                                            data-toggle="modal" data-target="#credits_modal" role="dialog">
-
-                                            <i class="zmdi zmdi-plus"></i>Adicionar Credito
-                                        </a>
+                                            <i class="zmdi zmdi-plus"></i>Adicionar Credito</a>
                                     </div>
                                 </div>
 
                                 <div class="table-responsive table-responsive-data2">
                                     <table class="table table-data2">
                                         <thead>
-                                            <tr class="alert-secondary">
+                                            <tr>
                                                 <th>
                                                     <label class="au-checkbox">
                                                         <input type="checkbox">
                                                         <span class="au-checkmark"></span>
                                                     </label>
                                                 </th>
-                                                
-                                                <th>ID</th>
-                                                <th>Nome Completo</th>
-                                                <th>Emprestimo</th>
-                                                <th>Endereco</th>
-                                                <th>Data de Registo</th>
-                                                <th>Contactos</th>
-                                                <th>Status</th>
-                                                <th style="text-align: center">Acções</th>
+                                                <th>name</th>
+                                                <th>email</th>
+                                                <th>description</th>
+                                                <th>date</th>
+                                                <th>status</th>
+                                                <th>price</th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
 
-
-                                            <%
-                                                EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
-                                                SimpleDateFormat df = new SimpleDateFormat("yyy-MM-dd");
-                                                NumberFormat format = NumberFormat.getCurrencyInstance(Locale.getDefault());
-
-                                                List<Credito> cls = new CreditoJpaController(emf).findCreditoEntities();
-                                                for (Credito c : cls) {
-                                                    if (c.getIdcliente().getUser().getRoleId().getRoleId() > 0) {
-                                            %>
-
+                                            <tr class="spacer"></tr>
                                             <tr class="spacer"></tr>
                                             <tr class="tr-shadow">
-
                                                 <td>
                                                     <label class="au-checkbox">
                                                         <input type="checkbox">
                                                         <span class="au-checkmark"></span>
                                                     </label>
                                                 </td>
-
-                                                <td><%=c.getIdcliente().getNrBi()%></td>
-                                                <td><%=c.getIdcliente().getUser().getLastName() + "," + c.getIdcliente().getUser().getName()%></td>
-                                                <td><span class="block-email"><%=format.format(c.getValor())%></span></td>
-                                                <td class="desc"><%=c.getIdcliente().getLinhaendereco1()%></td>
-                                                <td><%= df.format(c.getIdcliente().getUser().getDataAdded())%></td>
-
-                                                <td><span class="status--process"><%=c.getIdcliente().getContacto1() + "/" + c.getIdcliente().getContacto2()%></span>
+                                                <td>Lori Lynch</td>
+                                                <td>
+                                                    <span class="block-email">lyn@example.com</span>
                                                 </td>
+                                                <td class="desc">iPhone X 256Gb Black</td>
+                                                <td>2018-09-25 19:03</td>
+                                                <td>
+                                                    <span class="status--denied">Denied</span>
+                                                </td>
+                                                <td>$1199.00</td>
+                                                <td>
+                                                    <div class="table-data-feature">
+                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Send">
+                                                            <i class="zmdi zmdi-mail-send"></i>
+                                                        </button>
+                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="More">
+                                                            <i class="zmdi zmdi-more"></i>
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
 
-                                                <td><%=c.getIdestado().getStatus()%></td>
+                                            <tr class="spacer"></tr>
+                                            <tr class="tr-shadow">
+                                                <td>
+                                                    <label class="au-checkbox">
+                                                        <input type="checkbox">
+                                                        <span class="au-checkmark"></span>
+                                                    </label>
+                                                </td>
+                                                <td>Lori Lynch</td>
+                                                <td>
+                                                    <span class="block-email">doe@example.com</span>
+                                                </td>
+                                                <td class="desc">Camera C430W 4k</td>
+                                                <td>2018-09-24 19:10</td>
+                                                <td>
+                                                    <span class="status--process">Processed</span>
+                                                </td>
+                                                <td>$699.00</td>
                                                 <td>
                                                     <div class="table-data-feature">
 
-                                                        <button onclick="_view_detail(this.value)" value="<%=c.getIdcredito()%>" class="item" data-toggle="tooltip" data-placement="top" title="Detalhes de Pagamentos">
-                                                            <i class="zmdi zmdi-more"></i>
+                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Send">
+                                                            <i class="zmdi zmdi-mail-send"></i>
                                                         </button>
 
-                                                        <a href="details_credito.jsp?idcredito="<%=c.getIdcredito()%> class="item" data-toggle="tooltip" data-placement="top" title="Detalhes de Pagamento">
-                                                            <i class="zmdi zmdi-settings"></i>
-                                                        </a>
-
-                                                        <a href="/microsapp/CRUDController?acao=2&idcredito="<%=c.getIdcredito()%> class="item" data-toggle="tooltip" data-placement="top" title="Actualizar Credito">
-                                                            <i class="zmdi zmdi-edit"></i>
-                                                        </a>
+                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="More">
+                                                            <i class="zmdi zmdi-more"></i>
+                                                        </button>
 
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <% }
-                                                }
-                                            %>
-
                                         </tbody>
                                     </table>
                                 </div>
@@ -211,13 +219,14 @@
                         </div>
                     </div>
                 </section>
-
+                <!-- END DATA TABLE-->
+                <!-- COPYRIGHT-->
                 <section class="p-t-60 p-b-20">
                     <div class="container">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="copyright">
-                                    <p>Copyright © 2019. <a href="#">Infoss.net</a>.</p>
+                                    <p>Copyright © 2018 Colorlib. All rights reserved. <a href="https://colorlib.com">Colorlib</a>.</p>
                                 </div>
                             </div>
                         </div>
@@ -230,12 +239,4 @@
         <jsp:include page="../modal/creditos.jsp"/>
 
     </body>
-
-    <script>
-        function _view_detail(item) {
-
-            window.location = 'payments.jsp?idcredito=' + item;
-
-        }
-    </script>
 </html>

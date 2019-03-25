@@ -68,16 +68,16 @@ public class Tipocredito implements Serializable {
     public Tipocredito() {
     }
 
-    public Tipocredito(Integer idcrecredito) {
-        this.idcrecredito = idcrecredito;
-    }
-
     public Tipocredito(String descricao, Integer pgto, Double juro, Boolean status, Date data) {
         this.descricao = descricao;
         this.pgto = pgto;
         this.juro = juro;
         this.status = status;
         this.data = data;
+    }
+
+    public Tipocredito(Integer idcrecredito) {
+        this.idcrecredito = idcrecredito;
     }
 
     public Tipocredito(Integer idcrecredito, String descricao) {

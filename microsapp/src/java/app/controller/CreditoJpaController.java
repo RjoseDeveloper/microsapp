@@ -41,26 +41,12 @@ public class CreditoJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Credito credito) throws IllegalOrphanException {
+    public void create(Credito credito) {
         if (credito.getHistoricopagamentoList() == null) {
             credito.setHistoricopagamentoList(new ArrayList<Historicopagamento>());
         }
         if (credito.getCreditoconsumoList() == null) {
             credito.setCreditoconsumoList(new ArrayList<Creditoconsumo>());
-        }
-        List<String> illegalOrphanMessages = null;
-        Credito credito1OrphanCheck = credito.getCredito1();
-        if (credito1OrphanCheck != null) {
-            Credito oldCreditoOfCredito1 = credito1OrphanCheck.getCredito();
-            if (oldCreditoOfCredito1 != null) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("The Credito " + credito1OrphanCheck + " already has an item of type Credito whose credito1 column cannot be null. Please make another selection for the credito1 field.");
-            }
-        }
-        if (illegalOrphanMessages != null) {
-            throw new IllegalOrphanException(illegalOrphanMessages);
         }
         EntityManager em = null;
         try {
@@ -85,16 +71,6 @@ public class CreditoJpaController implements Serializable {
             if (idcliente != null) {
                 idcliente = em.getReference(idcliente.getClass(), idcliente.getIdcliente());
                 credito.setIdcliente(idcliente);
-            }
-            Credito creditoRel = credito.getCredito();
-            if (creditoRel != null) {
-                creditoRel = em.getReference(creditoRel.getClass(), creditoRel.getIdcredito());
-                credito.setCredito(creditoRel);
-            }
-            Credito credito1 = credito.getCredito1();
-            if (credito1 != null) {
-                credito1 = em.getReference(credito1.getClass(), credito1.getIdcredito());
-                credito.setCredito1(credito1);
             }
             Estado idestado = credito.getIdestado();
             if (idestado != null) {
@@ -150,19 +126,6 @@ public class CreditoJpaController implements Serializable {
                 idcliente.getCreditoList().add(credito);
                 idcliente = em.merge(idcliente);
             }
-            if (creditoRel != null) {
-                Credito oldCredito1OfCreditoRel = creditoRel.getCredito1();
-                if (oldCredito1OfCreditoRel != null) {
-                    oldCredito1OfCreditoRel.setCredito(null);
-                    oldCredito1OfCreditoRel = em.merge(oldCredito1OfCreditoRel);
-                }
-                creditoRel.setCredito1(credito);
-                creditoRel = em.merge(creditoRel);
-            }
-            if (credito1 != null) {
-                credito1.setCredito(credito);
-                credito1 = em.merge(credito1);
-            }
             if (idestado != null) {
                 idestado.getCreditoList().add(credito);
                 idestado = em.merge(idestado);
@@ -211,10 +174,6 @@ public class CreditoJpaController implements Serializable {
             Creditovip creditovipNew = credito.getCreditovip();
             Cliente idclienteOld = persistentCredito.getIdcliente();
             Cliente idclienteNew = credito.getIdcliente();
-            Credito creditoRelOld = persistentCredito.getCredito();
-            Credito creditoRelNew = credito.getCredito();
-            Credito credito1Old = persistentCredito.getCredito1();
-            Credito credito1New = credito.getCredito1();
             Estado idestadoOld = persistentCredito.getIdestado();
             Estado idestadoNew = credito.getIdestado();
             Tipocredito idtipocreditoOld = persistentCredito.getIdtipocredito();
@@ -241,21 +200,6 @@ public class CreditoJpaController implements Serializable {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
                 illegalOrphanMessages.add("You must retain Creditovip " + creditovipOld + " since its credito field is not nullable.");
-            }
-            if (creditoRelOld != null && !creditoRelOld.equals(creditoRelNew)) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("You must retain Credito " + creditoRelOld + " since its credito1 field is not nullable.");
-            }
-            if (credito1New != null && !credito1New.equals(credito1Old)) {
-                Credito oldCreditoOfCredito1 = credito1New.getCredito();
-                if (oldCreditoOfCredito1 != null) {
-                    if (illegalOrphanMessages == null) {
-                        illegalOrphanMessages = new ArrayList<String>();
-                    }
-                    illegalOrphanMessages.add("The Credito " + credito1New + " already has an item of type Credito whose credito1 column cannot be null. Please make another selection for the credito1 field.");
-                }
             }
             for (Historicopagamento historicopagamentoListOldHistoricopagamento : historicopagamentoListOld) {
                 if (!historicopagamentoListNew.contains(historicopagamentoListOldHistoricopagamento)) {
@@ -291,14 +235,6 @@ public class CreditoJpaController implements Serializable {
             if (idclienteNew != null) {
                 idclienteNew = em.getReference(idclienteNew.getClass(), idclienteNew.getIdcliente());
                 credito.setIdcliente(idclienteNew);
-            }
-            if (creditoRelNew != null) {
-                creditoRelNew = em.getReference(creditoRelNew.getClass(), creditoRelNew.getIdcredito());
-                credito.setCredito(creditoRelNew);
-            }
-            if (credito1New != null) {
-                credito1New = em.getReference(credito1New.getClass(), credito1New.getIdcredito());
-                credito.setCredito1(credito1New);
             }
             if (idestadoNew != null) {
                 idestadoNew = em.getReference(idestadoNew.getClass(), idestadoNew.getIdestado());
@@ -357,23 +293,6 @@ public class CreditoJpaController implements Serializable {
             if (idclienteNew != null && !idclienteNew.equals(idclienteOld)) {
                 idclienteNew.getCreditoList().add(credito);
                 idclienteNew = em.merge(idclienteNew);
-            }
-            if (creditoRelNew != null && !creditoRelNew.equals(creditoRelOld)) {
-                Credito oldCredito1OfCreditoRel = creditoRelNew.getCredito1();
-                if (oldCredito1OfCreditoRel != null) {
-                    oldCredito1OfCreditoRel.setCredito(null);
-                    oldCredito1OfCreditoRel = em.merge(oldCredito1OfCreditoRel);
-                }
-                creditoRelNew.setCredito1(credito);
-                creditoRelNew = em.merge(creditoRelNew);
-            }
-            if (credito1Old != null && !credito1Old.equals(credito1New)) {
-                credito1Old.setCredito(null);
-                credito1Old = em.merge(credito1Old);
-            }
-            if (credito1New != null && !credito1New.equals(credito1Old)) {
-                credito1New.setCredito(credito);
-                credito1New = em.merge(credito1New);
             }
             if (idestadoOld != null && !idestadoOld.equals(idestadoNew)) {
                 idestadoOld.getCreditoList().remove(credito);
@@ -464,13 +383,6 @@ public class CreditoJpaController implements Serializable {
                 }
                 illegalOrphanMessages.add("This Credito (" + credito + ") cannot be destroyed since the Creditovip " + creditovipOrphanCheck + " in its creditovip field has a non-nullable credito field.");
             }
-            Credito creditoOrphanCheck = credito.getCredito();
-            if (creditoOrphanCheck != null) {
-                if (illegalOrphanMessages == null) {
-                    illegalOrphanMessages = new ArrayList<String>();
-                }
-                illegalOrphanMessages.add("This Credito (" + credito + ") cannot be destroyed since the Credito " + creditoOrphanCheck + " in its credito field has a non-nullable credito1 field.");
-            }
             List<Historicopagamento> historicopagamentoListOrphanCheck = credito.getHistoricopagamentoList();
             for (Historicopagamento historicopagamentoListOrphanCheckHistoricopagamento : historicopagamentoListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
@@ -492,11 +404,6 @@ public class CreditoJpaController implements Serializable {
             if (idcliente != null) {
                 idcliente.getCreditoList().remove(credito);
                 idcliente = em.merge(idcliente);
-            }
-            Credito credito1 = credito.getCredito1();
-            if (credito1 != null) {
-                credito1.setCredito(null);
-                credito1 = em.merge(credito1);
             }
             Estado idestado = credito.getIdestado();
             if (idestado != null) {

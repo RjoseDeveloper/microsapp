@@ -56,8 +56,7 @@ public class UsersController extends HttpServlet {
             throws ServletException, IOException, PreexistingEntityException, Exception {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-
+           
             EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
             HttpSession session = request.getSession();
 
@@ -109,6 +108,11 @@ public class UsersController extends HttpServlet {
             //cliente.setUser(user);
 
             new ClienteJpaController(emf).create(cliente);
+            
+            session.setAttribute("username", user.getEmail());
+            session.setAttribute("password", user.getPassword());
+            request.setAttribute("user", user);
+            
             System.out.println("Cliente Created: "+cliente.toString());
             response.sendRedirect("/microsapp/tamplates/success.jsp");
 

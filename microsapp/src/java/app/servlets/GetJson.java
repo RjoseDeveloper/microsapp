@@ -9,6 +9,8 @@ import app.controller.TipocreditoJpaController;
 import app.model.Tipocredito;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,26 +40,41 @@ public class GetJson extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, JSONException {
-        
+
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         try (PrintWriter out = response.getWriter()) {
             EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
-            
+
             switch (Integer.parseInt(request.getParameter("acao"))) {
                 case 1:
+
+                    SimpleDateFormat sf = new SimpleDateFormat("dd-MM-yyyy");
+                    Calendar cal = Calendar.getInstance();
+                  
                     int id = Integer.parseInt(request.getParameter("idtipocredito"));
                     Tipocredito tipo = new TipocreditoJpaController(emf).findTipocredito(id);
+          
+                    int days = 30;
                     
                     JSONObject json = new JSONObject();
                     json.accumulate("juro", tipo.getJuro());
                     json.accumulate("pgto", tipo.getPgto());
                     json.accumulate("status", tipo.getStatus());
                     
-                    response.getWriter().write(json.toString());
+                    cal.add(Calendar.DATE, days);
+                    String di = sf.format(cal.getTime());
                     
+                    json.accumulate("di", di);
+                    cal.add(Calendar.MONTH, tipo.getPgto() - 1);
+                    
+                    String df = sf.format(cal.getTime());
+                    json.accumulate("df", df);
+
+                    response.getWriter().write(json.toString());
+
                     break;
-                case 2:                    
+                case 2:
                     break;
             }
 

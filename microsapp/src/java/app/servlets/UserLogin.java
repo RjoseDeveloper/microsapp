@@ -58,12 +58,10 @@ public class UserLogin extends HttpServlet {
                 
                 if ((username.equals(user1.getEmail())) && (password.equals(user1.getPassword()))) {
              
-                    //List<Role> id_role = user1.getRoleList();
-                    //String user_role = user1.getRoleList().get(i).getRole();
                     session.setAttribute("username", user1.getEmail());
                     session.setAttribute("apelido", user1.getLastName());
                     session.setAttribute("nome", user1.getName());
-                    session.setAttribute("iduser", user1.getUserId());
+                    session.setAttribute("iduser", user1.getUserId().intValue());
                     session.setAttribute("role_name", user1.getRoleId().getRole());
                     session.setAttribute("role_id", user1.getRoleId().getRoleId());
                     session.setAttribute("status", true);

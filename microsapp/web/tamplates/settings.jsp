@@ -15,11 +15,13 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Conf</title>
     </head>
     <body class="animsition">
-
-        <jsp:include page="../fragments/header_admin.jsp" />
+              <%
+            if (session.getAttribute("role_name").equals("ADMIN") || session.getAttribute("role_name").equals("STANDARD")) {%>
+            <jsp:include page="../fragments/header_admin.jsp"/>
+        <%} %>
         <!-- PAGE CONTAINER-->
         <div class="page-container">
 
@@ -70,7 +72,7 @@
                                                     <% }%>
 
                                                     <div class="login-form">
-                                                        <form action="/jmicrocreditosapp/ConfigController?acao=1" method="post" class="">
+                                                        <form action="/microsapp/ConfigController?acao=1" method="post" class="">
 
                                                             <div class="row">
                                                                 <div class="col-3">
@@ -126,14 +128,13 @@
 
                                                     <jsp:include page="lists/juros.jsp?acao=1"></jsp:include>
 
-                                                        </p>
                                                     </div>
 
 
                                                     <div class="tab-pane fade" id="custom-nav-profile" role="tabpanel" aria-labelledby="custom-nav-profile-tab">
                                                         <p><br>
 
-                                                        <form action="/jmicrocreditosapp/ConfigController?acao=2" method="post">
+                                                        <form action="/microsapp/ConfigController?acao=2" method="post">
 
 
                                                         <%
@@ -228,6 +229,8 @@
                                 </div>
                             </div>
                         </div>
+                                                            
+                                                                      
                     </div>
                     <!-- END PAGE CONTAINER-->
 

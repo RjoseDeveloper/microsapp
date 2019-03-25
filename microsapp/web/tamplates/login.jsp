@@ -33,27 +33,28 @@
 
                                 <div class="form-group">
                                     <label>Correio Electronico</label>
-                                    <input class="au-input au-input--full" type="email" 
+                                    <input class="au-input au-input--full" type="email" value=""
                                            name="email" placeholder="Email" required="Obrigatorio">
                                 </div>
                                 <div class="form-group">
                                     <label>Password</label>
-                                    <input class="au-input au-input--full" type="password"
+                                    <input class="au-input au-input--full" type="password" value=""
                                            name="password" placeholder="Password" required="Obrigatorio">
                                 </div>
                                 <button class="au-btn au-btn--block au-btn--green m-b-20" 
                                         type="submit">Entrar</button>
                             </form>
                             
-                            
-                            
                             <div class="register-link">
-                                <p>
+                                <p class="pull-left">
                                     Não possui Conta?
                                     <a href="register.jsp">Registar - se </a>
 
                                 </p>
+                                <p class="pull-right"><a href="#" style="color: blue" onclick="history.go(-1)"><< Regressar </a></p>
+                            
                             </div>
+                            <br>
                         </div>
 
                     </div>

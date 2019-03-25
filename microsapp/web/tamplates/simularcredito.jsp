@@ -13,7 +13,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Simulacao</title>
         <jsp:include page="../fragments/header_admin.jsp" />
     </head>
     <body class="animsition">
@@ -114,38 +114,51 @@
 
                                                 <div class="row form-group">
                                                     <div class="col col-md-4">
-                                                        <label for="hf-email" class=" form-control-label">Proximo PGTO:</label>
+                                                        <label for="hf-email" class=" form-control-label">Capital PGTO:</label>
                                                     </div>
                                                     <div class="col-12 col-md-8">
-                                                        <input type="number" id="valor_rs" name="valor_rs" readonly="" class="form-control">
+                                                        <input type="number" id="valor_rs" name="valor_rs" readonly="" style="color: blueviolet; font-weight: bold" class="form-control">
 
                                                     </div>
                                                 </div>
                                                 <div class="row form-group">
                                                     <div class="col col-md-4">
-                                                        <label for="hf-email" class=" form-control-label">Total de Juros:</label>
+                                                        <label for="hf-email" class=" form-control-label">Juros Cobrados:</label>
                                                     </div>
                                                     <div class="col-12 col-md-8">
-                                                        <input type="number" id="juro_rs" name="juro_rs" readonly="" class="form-control">
+                                                        <input type="number" id="juro_rs" name="juro_rs" readonly="" style="color: blueviolet; font-weight: bold" class="form-control">
 
                                                     </div>
                                                 </div>
-                                                <div class="row form-group">
+                                                
+                                                                                        <div class="row form-group">
                                                     <div class="col col-md-4">
-                                                        <label for="hf-email" class=" form-control-label">PGTO:</label>
+                                                        <label for="hf-email" class=" form-control-label">Amortização (Mensal):</label>
                                                     </div>
                                                     <div class="col-12 col-md-8">
-                                                        <input type="number" id="pgto_rs" name="pgto_rs" readonly="" class="form-control">
+                                                        <input type="number" id="amortizado_rs" name="amortizado_rs" readonly="" style="color: blueviolet; font-weight: bold" class="form-control">
 
                                                     </div>
                                                 </div>
+                                                
+                                                                                        <div class="row form-group">
+                                                    <div class="col col-md-4">
+                                                        <label for="hf-email" class=" form-control-label">PGTO (Meses):</label>
+                                                    </div>
+                                                    <div class="col-12 col-md-8">
+                                                        <input type="number" id="pgto_rs" name="pgto_rs" readonly="" style="color: blueviolet; font-weight: bold" class="form-control">
+
+                                                    </div>
+                                                </div>
+                                                
+        
 
                                                 <div class="row form-group">
                                                     <div class="col col-md-4">
                                                         <label for="hf-email" class=" form-control-label">Valor Final:</label>
                                                     </div>
                                                     <div class="col-12 col-md-8">
-                                                        <input type="text" id="vf" name="vf" readonly=""  value="" class="form-control">
+                                                        <input type="text" id="vf" name="vf" readonly="" style="color: black; font-weight: bold"  value="" class="form-control">
 
                                                     </div>
                                                 </div>
@@ -176,54 +189,54 @@
 
         <jsp:include page="../modal/creditos.jsp"/>
         <script>
-            $(document).ready(function () {
+                    $(document).ready(function () {
 
 
 
-                $('#btn_simular').click(function () {
+            $('#btn_simular').click(function () {
 
                     var valor = $('#valor').val();
                     var juro = $('#juro').val();
                     var qtdmes = $('#qtdmes').val();
-
-                    var valorNjuro = valor / qtdmes;
-
-                    var juro = valorNjuro * (juro / 100);
-                    var tjuro = valorNjuro + juro;
-                    var vf = tjuro * qtdmes;
-
-                    $('#vf').val(parseFloat(vf) + ",00");
-                    $('#valor_rs').val(parseFloat(tjuro));
-                    $('#juro_rs').val(parseFloat(juro));
-                    $('#pgto_rs').val(qtdmes);
-                    $('#data').val(d);
-
-                });
-            });
-
-            function _dados_credits(item) {
-
-                $.ajax({
+                    var juro50 = parseFloat(valor * 0.5);
+                    var pmensal = parseFloat(valor/qtdmes);
                     
+                    
+                    var tjuro = parseFloat(valor) * (parseFloat(juro)/100);
+                    var amortizado = parseFloat(pmensal) + tjuro;
+                    var vf = amortizado * qtdmes;
+                    
+                    $('#vf').val(vf.toFixed(2) + " Mzn");
+                    $('#valor_rs').val(pmensal.toFixed(2));
+                    $('#juro_rs').val(tjuro.toFixed(2));
+                    $('#pgto_rs').val(qtdmes);
+                     $('#amortizado_rs').val(amortizado.toFixed(2));
+            });
+            });
+                    function _dados_credits(item) {
+
+                    $.ajax({
+
                     url: "/microsapp/GetJson",
-                    type: 'GET',
-                    dataType: 'json',
-                    data: {acao: 1, idtipocredito: item},
-                    contentType: 'application/json',
-                    mimeType: 'application/json',
-                    success: function (data) {
-                        
-                        $('#juro').val(data.juro);
-                        $('#qtdmes').val(data.pgto);
-                        $('#pgto').html('PGTO Maximo: '+data.pgto).css('color','red');
+                            type: 'GET',
+                            dataType: 'json',
+                            data: {acao: 1, idtipocredito: item},
+                            contentType: 'application/json',
+                            mimeType: 'application/json',
+                            success: function (data) {
 
-                    },
-                    error: function (data, status, er) {
-                        alert("error: " + data + " status: " + status + " er:" + er);
+                            $('#juro').val(data.juro);
+                                    $('#qtdmes').val(data.pgto);
+                                    $('#pgto').html('PGTO Maximo: ' + data.pgto).css('color', 'red');
+                            },
+                            error: function (data, status, er) {
+                            alert("error: " + data + " status: " + status + " er:" + er);
+                            }
+                    });
                     }
-                });
 
-
+            function currencyFormat(num){
+            return 'MZN' + num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d)/g, '$1,')
             }
         </script>
 </html>
