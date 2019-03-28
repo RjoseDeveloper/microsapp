@@ -5,7 +5,11 @@
  */
 package app.servlets;
 
+import app.controller.CreditoJpaController;
 import app.controller.UserJpaController;
+import app.controller.exceptions.NonexistentEntityException;
+import app.model.Credito;
+import app.model.Estado;
 import app.model.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -17,6 +21,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManagerFactory;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -44,7 +50,7 @@ public class CRUDController extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, NonexistentEntityException, Exception {
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -52,6 +58,7 @@ public class CRUDController extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {
 
             EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
+            
             String action = (String) request.getParameter("action");
             List<User> lstUser = new ArrayList<>();
           
@@ -102,9 +109,16 @@ public class CRUDController extends HttpServlet {
                 case "create":
                     break;
                 case "update":
+                    
+                    Credito c = new CreditoJpaController(emf).findCredito(Integer.parseInt(request.getParameter("idcredito")));
+                    c.setIdestado(new Estado(4L)); // 4L estado autorizado;
+                    new CreditoJpaController(emf).edit(c);
+                    
+                    out.print("<div class=\"sufee-alert alert with-close alert-success alert-dismissible fade show\">\n" +
+"                                <span class=\"badge badge-pill badge-success\">Autorizado com sucesso</span></div>");
+                
                     break;
             }
-
         }
     }
 
@@ -120,7 +134,11 @@ public class CRUDController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(CRUDController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -134,7 +152,11 @@ public class CRUDController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (Exception ex) {
+            Logger.getLogger(CRUDController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

@@ -71,7 +71,7 @@ public class CreditoController extends HttpServlet {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
              Calendar cal = Calendar.getInstance();
             
-            String status = "1";
+            String status = "5";  // Status 5 nao autorizado ;
             int destino = Integer.parseInt(request.getParameter("destino"));
             
             try {
@@ -80,15 +80,19 @@ public class CreditoController extends HttpServlet {
                 int modopay = Integer.parseInt(request.getParameter("modopay"));
                 double valor = Double.parseDouble(request.getParameter("montante"));
                 
+                int mes = tipo.getPgto();
+
                 double pgto_r = valor /tipo.getPgto() ;
-                double juro = valor * (tipo.getPgto() / 100);
+                double juro = valor * (tipo.getJuro() / 100);
                 double tjuro = pgto_r + juro;
+                double vf = tjuro *tipo.getPgto();
+             
                 int day_in_month = 30;
                 
                 Date date_emp = formatter.parse(request.getParameter("datai"));
                 Date date_pag = formatter.parse(request.getParameter("dataf"));
                 
-                credito.setValor(tjuro * tipo.getPgto());
+                credito.setValor(Math.round(vf));
                 credito.setIdtipocredito(new Tipocredito(destino));
                 Cliente c = new Cliente();
                 c.setIdcliente(Integer.parseInt(userid));
@@ -110,7 +114,7 @@ public class CreditoController extends HttpServlet {
                     h.setIdcredito(credito);
                     h.setIdmodopagamento(new Modopagamento(modopay));
                     h.setOrdem(i+1);
-                    h.setValor(pgto_r + juro);
+                    h.setValor(Math.round(pgto_r + juro));
                     h.setData(formatter.parse(di));
                     new HistoricopagamentoJpaController(emf).create(h);
                 }
@@ -145,7 +149,7 @@ public class CreditoController extends HttpServlet {
                 creditoconsumo.setCreditoconsumoPK(ck);
                 
                 new CreditoconsumoJpaController(emf).create(creditoconsumo);
-                response.sendRedirect("/microsapp/tamplates/success.jsp");
+                response.sendRedirect("/microsapp/modal/success_cdr.jsp");
                 
             }
             if (destino == 2) {
@@ -157,7 +161,7 @@ public class CreditoController extends HttpServlet {
                 creditonegocio.setTestemunha2(request.getParameter("testemunha2"));
                 creditonegocio.setUrldeclaracao(request.getParameter("decbairro"));
                 new CreditonegocioJpaController(emf).create(creditonegocio);
-                response.sendRedirect("/microsapp/tamplates/success.jsp");
+                response.sendRedirect("/microsapp/modal/success_cdr.jsp");
                 
             }
             if (destino == 3) {
@@ -170,7 +174,7 @@ public class CreditoController extends HttpServlet {
                 penhor.setUrlimovel(request.getParameter("urldecimovel"));
                 
                 new CreditopenhorJpaController(emf).create(penhor);
-                response.sendRedirect("/microsapp/tamplates/success.jsp");
+                response.sendRedirect("/microsapp/modal/success_cdr.jsp");
                 
             }
             if (destino == 4) {
@@ -183,7 +187,7 @@ public class CreditoController extends HttpServlet {
                 vip.setUrldeclaracaohonra(request.getParameter("urldechonra"));
                 
                 new CreditovipJpaController(emf).create(vip);
-                response.sendRedirect("/microsapp/tamplates/success.jsp");
+                response.sendRedirect("/microsapp/modal/success_cdr.jsp");
                 
             }
         }

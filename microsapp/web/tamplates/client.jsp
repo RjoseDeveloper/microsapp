@@ -41,60 +41,16 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-md-12">
+                                
                                 <div class="pull-left">
-                                    Sistema de Gestao de Creditos
+                                    SISTEMA DE GESTÃO DE CRÉDITOS
                                 </div>
+                                
+                                
                             </div>
                         </div>
                     </div>
                 </section>
-
-                <!-- END WELCOME-->
-
-
-                <!-- STATISTIC-->
-                <section class="statistic statistic2">
-                    <div class="container">
-                        <div class="row">
-
-                            <div class="col-md-6 col-lg-4">
-                                <div class="statistic__item statistic__item--green">
-                                    <h2 class="number">15.9999</h2>
-                                    <span class="desc">TOTAL EMPRESTIMOS PAGOS</span>
-                                    <div class="icon">
-                                        <i class="zmdi zmdi-account-o"></i>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6 col-lg-4">
-                                <div class="statistic__item statistic__item--blue">
-                                    <h2 class="number">10,368</h2>
-                                    <span class="desc">TOTAL EMPRESTIMOS NÃO PAGOS</span>
-                                    <div class="icon">
-                                        <i class="zmdi zmdi-account-o"></i>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="col-md-6 col-lg-4">
-                                <div class="statistic__item statistic__item--orange">
-                                    <h2 class="number">388,688</h2>
-                                    <span class="desc">TOTAL NÃO AUTORIZADO</span>
-                                    <div class="icon">
-                                        <i class="zmdi zmdi-shopping-cart"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-
-                </section>
-
-
-                <!-- END STATISTIC CHART-->
 
                 <!-- DATA TABLE-->
                 <section class="p-t-60">
@@ -106,10 +62,9 @@
                                     <div class="table-data__tool-left">
 
                                         <div class="au-breadcrumb-content">
-
+<div class="results"></div>
                                             <form class="au-form-icon--sm" action="" method="post">
-                                                <input class="au-input--w300 au-input--style2" type="text"
-                                                       placeholder="Search for datas &amp; reports...">
+                                               
                                                 <button class="au-btn--submit2" type="submit">
                                                     <i class="zmdi zmdi-search"></i>
                                                 </button>
@@ -181,7 +136,7 @@
                                                 <td><span class="status--process"><%=c.getIdcliente().getContacto1() + "/" + c.getIdcliente().getContacto2()%></span>
                                                 </td>
 
-                                                <td><%=c.getIdestado().getStatus()%></td>
+                                                <td><span style="color: red"><%=c.getIdestado().getStatus()%></span></td>
                                                 <td>
                                                     <div class="table-data-feature">
 
@@ -189,13 +144,16 @@
                                                             <i class="zmdi zmdi-more"></i>
                                                         </button>
 
-                                                        <a href="details_credito.jsp?idcredito="<%=c.getIdcredito()%> class="item" data-toggle="tooltip" data-placement="top" title="Detalhes de Pagamento">
+                                                        <a href="details_credito.jsp?idcredito="<%=c.getIdcredito()%> class="item" data-toggle="tooltip" data-placement="top" title="Detalhes de Credito">
                                                             <i class="zmdi zmdi-settings"></i>
                                                         </a>
 
                                                         <a href="/microsapp/CRUDController?acao=2&idcredito="<%=c.getIdcredito()%> class="item" data-toggle="tooltip" data-placement="top" title="Actualizar Credito">
                                                             <i class="zmdi zmdi-edit"></i>
                                                         </a>
+                                                        <button value="<%=c.getIdcredito()%>" onclick="autorizar_credito(this.value)" class="item" data-toggle="tooltip" data-placement="top" title="Autorizar Credito">
+                                                            <i class="zmdi zmdi-check"></i>
+                                                        </button>
 
                                                     </div>
                                                 </td>
@@ -233,9 +191,24 @@
 
     <script>
         function _view_detail(item) {
-
             window.location = 'payments.jsp?idcredito=' + item;
-
         }
+        
+        function autorizar_credito(item){
+           
+            $.ajax({
+                
+                url: "/microsapp/ActionsController",
+                type:"post",
+                data:{idcredito:item, acao:1},
+                success:function(data){
+                   
+                    $('.results').html(data);
+                    //window.location.reload();
+                }
+                
+            });
+        }
+        
     </script>
 </html>

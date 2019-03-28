@@ -96,8 +96,8 @@
                                                         <button type="submit" class="btn btn-primary btn-sm" id="btn_simular">
                                                             <i class="fa fa-dot-circle-o"></i> Simular
                                                         </button>
-                                                        <button type="reset" class="btn btn-danger btn-sm">
-                                                            <i class="fa fa-ban"></i> Cancelar
+                                                        <button onclick="_aderir_credito()" class="btn btn-secondary btn-sm">
+                                                            <i class="fa fa-plus-circle"></i> Aderir
                                                         </button>
 
                                                     </div>
@@ -130,8 +130,8 @@
 
                                                     </div>
                                                 </div>
-                                                
-                                                                                        <div class="row form-group">
+
+                                                <div class="row form-group">
                                                     <div class="col col-md-4">
                                                         <label for="hf-email" class=" form-control-label">Amortização (Mensal):</label>
                                                     </div>
@@ -140,8 +140,8 @@
 
                                                     </div>
                                                 </div>
-                                                
-                                                                                        <div class="row form-group">
+
+                                                <div class="row form-group">
                                                     <div class="col col-md-4">
                                                         <label for="hf-email" class=" form-control-label">PGTO (Meses):</label>
                                                     </div>
@@ -150,8 +150,7 @@
 
                                                     </div>
                                                 </div>
-                                                
-        
+
 
                                                 <div class="row form-group">
                                                     <div class="col col-md-4">
@@ -162,20 +161,7 @@
 
                                                     </div>
                                                 </div>
-                                                <!--
-                                                                                                <div class="row form-group">
-                                                                                                    <div class="col col-md-4">
-                                                                                                        <label for="hf-email" class=" form-control-label">DATA DE PAGAMENTO:</label>
-                                                                                                    </div>
-                                                                                                    <div class="col-12 col-md-8">
-                                                                                                        <input type="text" id="data" name=data readonly="" value="" class="form-control">
-                                                
-                                                                                                    </div>
-                                                                                                </div>-->
-
                                             </div>
-
-
                                         </div>
 
                                     </div>
@@ -185,58 +171,58 @@
                     </div>
                 </div>
             </div>
+            <jsp:include page="../modal/creditos.jsp"/>
         </div>
 
-        <jsp:include page="../modal/creditos.jsp"/>
         <script>
-                    $(document).ready(function () {
+            $(document).ready(function () {
 
 
 
-            $('#btn_simular').click(function () {
+                $('#btn_simular').click(function () {
 
                     var valor = $('#valor').val();
                     var juro = $('#juro').val();
                     var qtdmes = $('#qtdmes').val();
                     var juro50 = parseFloat(valor * 0.5);
-                    var pmensal = parseFloat(valor/qtdmes);
-                    
-                    
-                    var tjuro = parseFloat(valor) * (parseFloat(juro)/100);
+                    var pmensal = parseFloat(valor / qtdmes);
+
+
+                    var tjuro = parseFloat(valor) * (parseFloat(juro) / 100);
                     var amortizado = parseFloat(pmensal) + tjuro;
                     var vf = amortizado * qtdmes;
-                    
+
                     $('#vf').val(vf.toFixed(2) + " Mzn");
                     $('#valor_rs').val(pmensal.toFixed(2));
                     $('#juro_rs').val(tjuro.toFixed(2));
                     $('#pgto_rs').val(qtdmes);
-                     $('#amortizado_rs').val(amortizado.toFixed(2));
+                    $('#amortizado_rs').val(amortizado.toFixed(2));
+                });
             });
-            });
-                    function _dados_credits(item) {
+            function _dados_credits(item) {
 
-                    $.ajax({
-
+                $.ajax({
                     url: "/microsapp/GetJson",
-                            type: 'GET',
-                            dataType: 'json',
-                            data: {acao: 1, idtipocredito: item},
-                            contentType: 'application/json',
-                            mimeType: 'application/json',
-                            success: function (data) {
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {acao: 1, idtipocredito: item},
+                    contentType: 'application/json',
+                    mimeType: 'application/json',
+                    success: function (data) {
 
-                            $('#juro').val(data.juro);
-                                    $('#qtdmes').val(data.pgto);
-                                    $('#pgto').html('PGTO Maximo: ' + data.pgto).css('color', 'red');
-                            },
-                            error: function (data, status, er) {
-                            alert("error: " + data + " status: " + status + " er:" + er);
-                            }
-                    });
+                        $('#juro').val(data.juro);
+                        $('#qtdmes').val(data.pgto);
+                        $('#pgto').html('PGTO Maximo: ' + data.pgto).css('color', 'red');
+                    },
+                    error: function (data, status, er) {
+                        alert("error: " + data + " status: " + status + " er:" + er);
                     }
+                });
+            }
 
-            function currencyFormat(num){
-            return 'MZN' + num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d)/g, '$1,')
+            function _aderir_credito() {
+                $('#credits_modal').modal();
+                $('#montante').val($('#valor').val());
             }
         </script>
 </html>

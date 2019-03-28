@@ -39,7 +39,7 @@
             <!-- PAGE CONTENT-->
             <div class="page-content--bgf7">
                 <!-- BREADCRUMB-->
-               
+
 
                 <section class="p-t-60">
                     <div class="container">
@@ -49,17 +49,17 @@
                                 <div class="table-data__tool">
                                     <div class="table-data__tool-left">
 
-<!--                                        <div class="au-breadcrumb-content">
-                                            <form class="au-form-icon--sm" action="" method="post">
-                                                <input class="au-input--w300 au-input--style2" type="text"
-                                                       placeholder="Search for datas &amp; reports...">
-                                                <button class="au-btn--submit2" type="submit">
-                                                    <i class="zmdi zmdi-search"></i>
-                                                </button>
-                                            </form>
-                                        </div>-->
+                                        <!--                                        <div class="au-breadcrumb-content">
+                                                                                    <form class="au-form-icon--sm" action="" method="post">
+                                                                                        <input class="au-input--w300 au-input--style2" type="text"
+                                                                                               placeholder="Search for datas &amp; reports...">
+                                                                                        <button class="au-btn--submit2" type="submit">
+                                                                                            <i class="zmdi zmdi-search"></i>
+                                                                                        </button>
+                                                                                    </form>
+                                                                                </div>-->
 
-                               
+
                                     </div>
 
                                     <div class="table-data__tool-right">
@@ -78,31 +78,57 @@
                                 <!-- DATA TABLE-->
 
                                 <%
-                                    
+
                                     int idcredito = Integer.parseInt(request.getParameter("idcredito"));
-                 
+
                                     EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
                                     NumberFormat format = NumberFormat.getCurrencyInstance(Locale.getDefault());
                                     Credito cli = new CreditoJpaController(emf).findCredito(idcredito);
                                     int idcliente = cli.getIdcliente().getIdcliente();
-            
-                                   Historicopagamento i = new HistoricopagamentoJpaController(emf).findHistoricopagamento(idcredito);
+
+                                    Historicopagamento i = new HistoricopagamentoJpaController(emf).findHistoricopagamento(idcredito);
                                 %>
 
-                                <h4 class="pull-left">VALOR ACTUAL: <span class="role user"><%= format.format(cli.getValor())%></span></h4>
-                                <h4 class="pull-right" >CLIENTE: <%= cli.getIdcliente().getUser().getLastName()+", "+cli.getIdcliente().getUser().getName() %></span></h4>
-                                
+                                <h4 class="pull-left">
+
+                                    <div class="col-md-8 col-lg-12">
+                                        <!-- TOP CAMPAIGN-->
+
+
+                                        <div class="table-responsive">
+                                            <table class="table table-data-feature">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Valor Credito:</td>
+                                                        <td><span class="role user"><%= format.format(cli.getValor())%></span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Tipo de Credito:</td>
+                                                        <td><span class="role user"><%= cli.getIdtipocredito().getDescricao()%></span><span style="color:red">&nbsp; [<%=cli.getIdtipocredito().getJuro() + "%"%>]</span></td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <!-- END TOP CAMPAIGN-->
+                                    </div>
+                                </h4>
+
+
+                                <h4 class="pull-right" >CLIENTE: <%= cli.getIdcliente().getUser().getLastName() + ", " + cli.getIdcliente().getUser().getName()%></span></h4>
+
                                 <br> <br>
                                 <div class="table-responsive m-b-40">
                                     <table class="table table-borderless table-data3">
                                         <thead>
                                             <tr>
                                                 <th>PGTO</th>
-                                                <th>CLIENTE</th>
-                                                <th>TOTAL CREDITO</th>
+
                                                 <th>PTGO MENSAL</th>
                                                 <th>JUROS</th>
                                                 <th>AMORTIZACAO</th>
+                                                <th>MODALIDADE PGTO</th>
 
                                                 <th>DATA</th>
                                                 <th>STATUS</th>
@@ -116,32 +142,44 @@
 
                                                     SimpleDateFormat df = new SimpleDateFormat("yyy-MM-dd");
                                                     List<Historicopagamento> history = new HistoricopagamentoJpaController(emf).findHistoricopagamentoEntities();
-                          
+
                                                     for (Historicopagamento c : history) {
+                                                        if (c.getIdcredito().getIdcredito().equals(idcredito)) {
 
-                                                        if (c.getIdcredito().getCredito().getIdcredito().equals(idcredito)) {
-
-                                                            double juro50 = c.getIdcredito().getValor() * 0.5;
-                                                            double pmensal = c.getIdcredito().getValor() / c.getIdcredito().getIdtipocredito().getPgto();
-
-                                                            double tjuro = c.getIdcredito().getValor() * (c.getIdcredito().getIdtipocredito().getJuro() / 100);
-                                                            double amortizado = pmensal + tjuro;
-                                                            double vf = amortizado * c.getIdcredito().getIdtipocredito().getPgto();
+                                                            double pmensal = (c.getIdcredito().getValor() - c.getValor()) / c.getIdcredito().getIdtipocredito().getPgto();
+                                                            double tjuro = (c.getIdcredito().getValor() - c.getValor()) * (c.getIdcredito().getIdtipocredito().getJuro() / 100);
 
                                                 %>
 
-                                                <td><%=c.getIdcredito().getCredito().getIdtipocredito().getPgto()%></td>
-                                                <td><%=c.getIdcredito().getCredito().getIdcliente().getUser().getLastName() + "," + c.getIdcredito().getCredito().getIdcliente().getUser().getName()%></td>
+                                                <td><%=c.getOrdem()%></td>
+                                                <td class="desc"><%=format.format(pmensal)%></td>
+                                                <td><%=format.format(tjuro)%></td>
+
                                                 <td>
-                                                    <span class="block-email"><%= format.format(vf)%></span>
+                                                    <span class="block-email">
+                                                        <%=format.format(c.getValor())%></span>
                                                 </td>
-                                                <td class="desc"><%= format.format(pmensal)%></td>
-                                                <td><%= format.format(tjuro)%></td>
 
-                                                <td><%= format.format(amortizado)%></td>
+                                                <td><%=c.getIdmodopagamento().getDescricao()%></td>
 
-                                                <td><%= df.format(c.getIdcredito().getDataPagamento())%></td>
-                                                <td><%=c.getIdcredito().getIdestado().getStatus()%></td>
+                                                <td><%=df.format(c.getData())%></td>
+                                                <td>
+                                                    <%
+                                                        String label = "";
+                                                        if (c.getIdcredito().getIdestado().getIdestado() == 1) {
+                                                            label = "role member";
+                                                        }
+                                                        if (c.getIdcredito().getIdestado().getIdestado() == 3) {
+                                                            label = "role admin";
+                                                        }
+                                                        if (c.getIdcredito().getIdestado().getIdestado() == 2) {
+                                                            label = "role user";
+                                                        }
+                                                    %>
+
+                                                    <span class="<%=label%>"><%=c.getIdcredito().getIdestado().getStatus()%></span>
+
+                                                </td>
 
                                                 <td>
                                                     <div class="table-data-feature">

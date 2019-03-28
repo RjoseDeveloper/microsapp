@@ -74,7 +74,7 @@
                                         <a href="../tamplates/settings.jsp">SESSÕES DO SISTEMA</a>
                                     </li>
                                     <li>
-                                        <a href="../tamplates/forget-pass.html">INTEGRAÇÃO BANCÁRIA</a>
+                                        <a href="../tamplates/recoverpass.html">INTEGRAÇÃO BANCÁRIA</a>
                                     </li>
                                 </ul>
                             </li>

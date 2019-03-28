@@ -7,11 +7,34 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+    
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>HomePage</title>
     </head>
-    <body>
-        <h1>Hello World!</h1>
+
+    <body class="animsition">
+       
+        <%
+            String page_init = "";
+            if (session.getAttribute("role_name").equals("ADMIN")) {%>
+            
+            <jsp:include page="../fragments/header_admin.jsp" />
+            <% page_init = "admin.jsp";}%>
+
+        <%
+             if (session.getAttribute("role_name").equals("USER")) {%>
+            <jsp:include page="../fragments/header_user.jsp" />
+            <% page_init = "user.jsp";  }%>
+
+        <%
+             if (session.getAttribute("role_name").equals("CLIENT")) {%>
+            <jsp:include page="../fragments/header_cliente.jsp" />
+            <% page_init = "client.jsp"; }%>
+
+        <iframe src="<%=page_init %>" width="100%" hidden="1000px" frameborder="1" name="home"></iframe>
+    
     </body>
+
+
 </html>

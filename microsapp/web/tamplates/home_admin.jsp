@@ -1,35 +1,25 @@
 <%-- 
-    Document   : admin
-    Created on : Feb 20, 2019, 8:20:01 AM
+    Document   : home_admin
+    Created on : Mar 27, 2019, 7:59:01 AM
     Author     : Raimundo Jose
 --%>
 
-<%@page import="java.text.Format"%>
+<%@page import="app.methods.Functions"%>
+<%@page import="app.controller.ClienteJpaController"%>
 <%@page import="java.text.NumberFormat"%>
 <%@page import="java.util.Locale"%>
-<%@page import="app.controller.ClienteJpaController"%>
-<%@page import="app.methods.Functions"%>
+<%@page import="app.controller.CreditoJpaController"%>
 <%@page import="app.model.Credito"%>
 <%@page import="java.util.List"%>
-<%@page import="app.controller.CreditoJpaController"%>
 <%@page import="javax.persistence.EntityManagerFactory"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Admin</title>
+        <title>&nbsp;</title>
     </head>
-
-    <%
-        if (session.getAttribute("username") != null) {
-    %>
-     <jsp:include page="../fragments/header_admin.jsp" />
-
-    <body class="animsition">
-
-       
-        <!-- PAGE CONTENT-->
+    <body>
         <div class="page-content--bgf7">
 
             <!-- END WELCOME-->
@@ -246,9 +236,4 @@
             
         </div>
     </body>
-
-    <% } else {
-            response.sendRedirect("../tamplates/login.jsp");
-        }%>
-
 </html>

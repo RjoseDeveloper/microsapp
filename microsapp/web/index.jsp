@@ -28,8 +28,6 @@
         <link rel="stylesheet" href="assets/gallery/style.css">
         <link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css" type="text/css">
 
-
-
     </head>
     <body>
         <section class="menu cid-rbHOkeVLgX" once="menu" id="menu2-0">
