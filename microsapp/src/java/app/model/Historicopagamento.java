@@ -35,7 +35,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Historicopagamento.findByData", query = "SELECT h FROM Historicopagamento h WHERE h.data = :data"),
     @NamedQuery(name = "Historicopagamento.findByValor", query = "SELECT h FROM Historicopagamento h WHERE h.valor = :valor"),
     @NamedQuery(name = "Historicopagamento.findByOrdem", query = "SELECT h FROM Historicopagamento h WHERE h.ordem = :ordem"),
-    @NamedQuery(name = "Historicopagamento.findByIdhistorico", query = "SELECT h FROM Historicopagamento h WHERE h.idhistorico = :idhistorico")})
+    @NamedQuery(name = "Historicopagamento.findByIdhistorico", query = "SELECT h FROM Historicopagamento h WHERE h.idhistorico = :idhistorico"),
+    @NamedQuery(name = "Historicopagamento.findByStatus", query = "SELECT h FROM Historicopagamento h WHERE h.status = :status")})
 public class Historicopagamento implements Serializable {
     private static final long serialVersionUID = 1L;
     @Basic(optional = false)
@@ -53,6 +54,8 @@ public class Historicopagamento implements Serializable {
     @Basic(optional = false)
     @Column(name = "idhistorico", nullable = false)
     private Integer idhistorico;
+    @Column(name = "status")
+    private Boolean status;
     @JoinColumn(name = "idcredito", referencedColumnName = "idcredito", nullable = false)
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Credito idcredito;
@@ -104,6 +107,14 @@ public class Historicopagamento implements Serializable {
 
     public void setIdhistorico(Integer idhistorico) {
         this.idhistorico = idhistorico;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 
     public Credito getIdcredito() {

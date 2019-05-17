@@ -12,6 +12,10 @@
         <servlet-name>CRUDController</servlet-name>
         <servlet-class>app.servlets.CRUDController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>TestJson</servlet-name>
+        <servlet-class>app.servlets.TestJson</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GetJson</servlet-name>
         <url-pattern>/GetJson</url-pattern>
@@ -19,6 +23,10 @@
     <servlet-mapping>
         <servlet-name>CRUDController</servlet-name>
         <url-pattern>/CRUDController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>TestJson</servlet-name>
+        <url-pattern>/TestJson</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>90</session-timeout>

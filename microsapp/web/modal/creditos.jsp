@@ -69,7 +69,7 @@
                                         <div class="form-group">
                                             <label for="datapag" class="control-label mb-1">Modo de Pagamento:</label>
                                             <select required="required" name="modopay" id="modopay" class="form-control">
-                                                <option value="0">Please Select</option>
+                                                <option value="2">Please Select</option>
                                                 
                                                 <%
                                                     List<Modopagamento> md = new ModopagamentoJpaController(emf).findModopagamentoEntities();
@@ -89,7 +89,7 @@
                                     <label for="datapag" class="control-label mb-1">Tipo de Credito:</label>
 
                                     <select required="required" onchange="validar_credito(this.value)" name="destino" id="destino" class="form-control">
-                                        <option value="0">Please Select</option>
+                                        <option value="1">Please Select</option>
                                         <%
                                             List<Tipocredito> tipo = new TipocreditoJpaController(emf).findTipocreditoEntities();
                                             for (Tipocredito c : tipo) {

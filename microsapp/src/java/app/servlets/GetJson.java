@@ -7,6 +7,9 @@ package app.servlets;
 
 import app.controller.TipocreditoJpaController;
 import app.model.Tipocredito;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
@@ -51,23 +54,23 @@ public class GetJson extends HttpServlet {
 
                     SimpleDateFormat sf = new SimpleDateFormat("dd-MM-yyyy");
                     Calendar cal = Calendar.getInstance();
-                  
+
                     int id = Integer.parseInt(request.getParameter("idtipocredito"));
                     Tipocredito tipo = new TipocreditoJpaController(emf).findTipocredito(id);
-          
+
                     int days = 30;
-                    
+
                     JSONObject json = new JSONObject();
                     json.accumulate("juro", tipo.getJuro());
                     json.accumulate("pgto", tipo.getPgto());
                     json.accumulate("status", tipo.getStatus());
-                    
+
                     cal.add(Calendar.DATE, days);
                     String di = sf.format(cal.getTime());
-                    
+
                     json.accumulate("di", di);
                     cal.add(Calendar.MONTH, tipo.getPgto() - 1);
-                    
+
                     String df = sf.format(cal.getTime());
                     json.accumulate("df", df);
 
@@ -75,15 +78,19 @@ public class GetJson extends HttpServlet {
 
                     break;
                 case 2:
+                    List<Tipocredito> list = new TipocreditoJpaController(emf).findTipocreditoEntities();
+                    JSONObject object = new JSONObject();
+
+                    for (Tipocredito tpc : list) {
+                        object.accumulate("nome", tpc.getDescricao());
+                        object.accumulate("juro", tpc.getJuro());
+                    }
+
+                    out.write(object.toString());
+
                     break;
             }
 
-//            List<Tipocredito> list = new ArrayList<Tipocredito>();
-//            list.add("Sunday");
-//            list.add("Monday");
-//            list.add("Tuesday");
-//            json.accumulate("weekdays", list);
-//            System.out.println(json.toString());
         }
     }
 

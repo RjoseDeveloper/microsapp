@@ -117,28 +117,28 @@
                                         <tbody>
                                             <tr>
                                                 <td>Credito ao Consumo</td>
-                                                <td><%=format.format(new Functions().getSomaCredito(1, 1))%></td>
+                                                <td><%=format.format(new Functions().getSomaCredito(1, false))%></td>
                                             </tr>
                                             <tr>
                                                 <td>Credito para Negocio</td>
-                                                <td><%=format.format(new Functions().getSomaCredito(2, 1))%></td>
+                                                <td><%=format.format(new Functions().getSomaCredito(2, false))%></td>
                                             </tr>
                                             <tr>
                                                 <td>Credito pela Penhor</td>
-                                                <td><%=format.format(new Functions().getSomaCredito(3, 1))%></td>
+                                                <td><%=format.format(new Functions().getSomaCredito(3, false))%></td>
 
                                             </tr>
                                             <tr>
                                                 <td>Credito VIP</td>
-                                                <td><%=format.format(new Functions().getSomaCredito(4, 1))%></td>
+                                                <td><%=format.format(new Functions().getSomaCredito(4, false))%></td>
                                             </tr>
 
                                             <tr class="alert-dark">
                                                 <td>Total</td>
-                                                <td><%=format.format(new Functions().getSomaCredito(1, 1)
-                                                        + new Functions().getSomaCredito(2, 1)
-                                                        + new Functions().getSomaCredito(3, 1)
-                                                        + new Functions().getSomaCredito(4, 1))%></td>
+                                                <td><%=format.format(new Functions().getSomaCredito(1, false)
+                                                        + new Functions().getSomaCredito(2, false)
+                                                        + new Functions().getSomaCredito(3, false)
+                                                        + new Functions().getSomaCredito(4, false))%></td>
                                             </tr>
 
                                         </tbody>
@@ -166,28 +166,28 @@
                                         <tbody>
                                             <tr>
                                                 <td>Credito ao Consumo</td>
-                                                <td><%=format.format(new Functions().getSomaCredito(1, 2))%></td>
+                                                <td><%=format.format(new Functions().getSomaCredito(1, true))%></td>
                                             </tr>
                                             <tr>
                                                 <td>Credito para Negocio</td>
-                                                <td><%=format.format(new Functions().getSomaCredito(2, 2))%></td>
+                                                <td><%=format.format(new Functions().getSomaCredito(2, true))%></td>
                                             </tr>
                                             <tr>
                                                 <td>Credito pela Penhor</td>
-                                                <td><%=format.format(new Functions().getSomaCredito(3, 2))%></td>
+                                                <td><%=format.format(new Functions().getSomaCredito(3, true))%></td>
 
                                             </tr>
                                             <tr>
                                                 <td>Credito VIP</td>
-                                                <td><%=format.format(new Functions().getSomaCredito(4, 2))%></td>
+                                                <td><%=format.format(new Functions().getSomaCredito(4, true))%></td>
                                             </tr>
 
                                             <tr class="alert-dark">
                                                 <td>Total</td>
-                                                <td><%=format.format(new Functions().getSomaCredito(1, 2)
-                                                        + new Functions().getSomaCredito(2, 2)
-                                                        + new Functions().getSomaCredito(3, 2)
-                                                        + new Functions().getSomaCredito(4, 2))%></td>
+                                                <td><%=format.format(new Functions().getSomaCredito(1, true)
+                                                        + new Functions().getSomaCredito(2, true)
+                                                        + new Functions().getSomaCredito(3, true)
+                                                        + new Functions().getSomaCredito(4, true))%></td>
                                             </tr>
 
                                         </tbody>
@@ -206,28 +206,28 @@
                                         <tbody>
                                             <tr>
                                                 <td>Credito ao Consumo</td>
-                                                <td><%=format.format(new Functions().getSomaCredito(1, 3))%></td>
+                                                <td><%=format.format(new Functions().getSomaCredito(1, false))%></td>
                                             </tr>
                                             <tr>
                                                 <td>Credito para Negocio</td>
-                                                <td><%=format.format(new Functions().getSomaCredito(2, 3))%></td>
+                                                <td><%=format.format(new Functions().getSomaCredito(2, false))%></td>
                                             </tr>
                                             <tr>
                                                 <td>Credito pela Penhor</td>
-                                                <td><%=format.format(new Functions().getSomaCredito(3, 3))%></td>
+                                                <td><%=format.format(new Functions().getSomaCredito(3,false))%></td>
 
                                             </tr>
                                             <tr>
                                                 <td>Credito VIP</td>
-                                                <td><%=format.format(new Functions().getSomaCredito(4, 3))%></td>
+                                                <td><%=format.format(new Functions().getSomaCredito(4,false))%></td>
                                             </tr>
 
                                             <tr class="alert-dark">
                                                 <td>Total</td>
-                                                <td><%=format.format(new Functions().getSomaCredito(1, 3)
-                                                        + new Functions().getSomaCredito(2, 3)
-                                                        + new Functions().getSomaCredito(3, 3)
-                                                        + new Functions().getSomaCredito(4, 3))%></td>
+                                                <td><%=format.format(new Functions().getSomaCredito(1, false)
+                                                        + new Functions().getSomaCredito(2,false)
+                                                        + new Functions().getSomaCredito(3, false)
+                                                        + new Functions().getSomaCredito(4, false))%></td>
                                             </tr>
 
                                         </tbody>

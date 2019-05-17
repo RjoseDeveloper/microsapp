@@ -41,12 +41,12 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-md-12">
-                                
+
                                 <div class="pull-left">
                                     SISTEMA DE GESTÃO DE CRÉDITOS
                                 </div>
-                                
-                                
+
+
                             </div>
                         </div>
                     </div>
@@ -62,13 +62,13 @@
                                     <div class="table-data__tool-left">
 
                                         <div class="au-breadcrumb-content">
-<div class="results"></div>
-                                            <form class="au-form-icon--sm" action="" method="post">
-                                               
-                                                <button class="au-btn--submit2" type="submit">
-                                                    <i class="zmdi zmdi-search"></i>
-                                                </button>
-                                            </form>
+                                            <div class="results"></div>
+                                            <!--                                            <form class="au-form-icon--sm" action="" method="post">
+                                                                                           
+                                                                                            <button class="au-btn--submit2" type="submit">
+                                                                                                <i class="zmdi zmdi-search"></i>
+                                                                                            </button>
+                                                                                        </form>-->
                                         </div>
 
                                     </div>
@@ -84,7 +84,7 @@
                                 </div>
 
                                 <div class="table-responsive table-responsive-data2">
-                                    <table class="table table-data2">
+                                    <table class="table table-data2" id="tbl_client">
                                         <thead>
                                             <tr class="alert-secondary">
                                                 <th>
@@ -93,7 +93,7 @@
                                                         <span class="au-checkmark"></span>
                                                     </label>
                                                 </th>
-                                                
+
                                                 <th>ID</th>
                                                 <th>Nome Completo</th>
                                                 <th>Emprestimo</th>
@@ -136,7 +136,17 @@
                                                 <td><span class="status--process"><%=c.getIdcliente().getContacto1() + "/" + c.getIdcliente().getContacto2()%></span>
                                                 </td>
 
-                                                <td><span style="color: red"><%=c.getIdestado().getStatus()%></span></td>
+                                                <td>
+                                                    <%
+                                                    String label ="";
+                                                        if (c.getIdestado().getIdestado().equals(4L)){
+                                                            label = "role member";
+                                                        }else{
+                                                            label ="role admin";
+                                                        }
+                                                    %>
+                                                    
+                                                    <span class="<%=label %>" id="_status"><%=c.getIdestado().getStatus()%></span></td>
                                                 <td>
                                                     <div class="table-data-feature">
 
@@ -151,7 +161,7 @@
                                                         <a href="/microsapp/CRUDController?acao=2&idcredito="<%=c.getIdcredito()%> class="item" data-toggle="tooltip" data-placement="top" title="Actualizar Credito">
                                                             <i class="zmdi zmdi-edit"></i>
                                                         </a>
-                                                        <button value="<%=c.getIdcredito()%>" onclick="autorizar_credito(this.value)" class="item" data-toggle="tooltip" data-placement="top" title="Autorizar Credito">
+                                                        <button id="btn_autorizar" value="<%=c.getIdcredito()%>" onclick="autorizar_credito(this.value)" class="item" data-toggle="tooltip" data-placement="top" title="Autorizar Credito">
                                                             <i class="zmdi zmdi-check"></i>
                                                         </button>
 
@@ -190,25 +200,38 @@
     </body>
 
     <script>
-        function _view_detail(item) {
-            window.location = 'payments.jsp?idcredito=' + item;
-        }
-        
-        function autorizar_credito(item){
-           
-            $.ajax({
+
+                $("#tbl_client #btn_autorizar").on("click", function() {
+        let tr = $(this).closest('tr');
+       
+                let a = tr.find('#_status').html('AUTORIZADO').css('color','blue');
                 
-                url: "/microsapp/ActionsController",
+        });
+                function _view_detail(item) {
+                window.location = 'payments.jsp?idcredito=' + item;
+                }
+                
+                /// remove button
+                $(document).on('click', 'button.deletebtn', function () {
+     $(this).closest('tr').remove();
+     return false;
+ });
+
+        function autorizar_credito(item){
+
+        $.ajax({
+
+        url: "/microsapp/ActionsController",
                 type:"post",
                 data:{idcredito:item, acao:1},
                 success:function(data){
-                   
-                    $('.results').html(data);
-                    //window.location.reload();
+
+                $('.results').html(data);
+                        //window.location.reload();
                 }
-                
-            });
+
+        });
         }
-        
+
     </script>
 </html>

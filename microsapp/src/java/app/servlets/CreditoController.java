@@ -68,7 +68,7 @@ public class CreditoController extends HttpServlet {
             HttpSession session = request.getSession();
             //System.out.println("ID USR: " + session.getAttribute("iduser"));
             String userid =  session.getAttribute("iduser").toString();
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
              Calendar cal = Calendar.getInstance();
             
             String status = "5";  // Status 5 nao autorizado ;
@@ -104,7 +104,6 @@ public class CreditoController extends HttpServlet {
                 
                 new CreditoJpaController(emf).create(credito);
                  
-                
                 for (int i = 0; i < tipo.getPgto(); i++) {
                     
                     cal.add(Calendar.DATE, day_in_month);
@@ -149,7 +148,7 @@ public class CreditoController extends HttpServlet {
                 creditoconsumo.setCreditoconsumoPK(ck);
                 
                 new CreditoconsumoJpaController(emf).create(creditoconsumo);
-                response.sendRedirect("/microsapp/modal/success_cdr.jsp");
+                response.sendRedirect("/microsapp/modal/success_crd.jsp");
                 
             }
             if (destino == 2) {
@@ -161,7 +160,7 @@ public class CreditoController extends HttpServlet {
                 creditonegocio.setTestemunha2(request.getParameter("testemunha2"));
                 creditonegocio.setUrldeclaracao(request.getParameter("decbairro"));
                 new CreditonegocioJpaController(emf).create(creditonegocio);
-                response.sendRedirect("/microsapp/modal/success_cdr.jsp");
+                response.sendRedirect("/microsapp/modal/success_crd.jsp");
                 
             }
             if (destino == 3) {
@@ -174,7 +173,7 @@ public class CreditoController extends HttpServlet {
                 penhor.setUrlimovel(request.getParameter("urldecimovel"));
                 
                 new CreditopenhorJpaController(emf).create(penhor);
-                response.sendRedirect("/microsapp/modal/success_cdr.jsp");
+                response.sendRedirect("/microsapp/modal/success_crd.jsp");
                 
             }
             if (destino == 4) {
@@ -187,7 +186,7 @@ public class CreditoController extends HttpServlet {
                 vip.setUrldeclaracaohonra(request.getParameter("urldechonra"));
                 
                 new CreditovipJpaController(emf).create(vip);
-                response.sendRedirect("/microsapp/modal/success_cdr.jsp");
+                response.sendRedirect("/microsapp/modal/success_crd.jsp");
                 
             }
         }

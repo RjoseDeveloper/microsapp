@@ -279,4 +279,18 @@ public class DistritoJpaController implements Serializable {
         }
     }
     
+    
+     public List<Distrito> buscarDistrito(String nome) {
+        EntityManager em = getEntityManager();
+        String name = "%" + nome + "%";
+        try {
+            Query query = em.createQuery(
+                    "from Distrito distrito where distrito.descricao like :name");
+            query.setParameter("name", name);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+    
 }

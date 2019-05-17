@@ -13,13 +13,8 @@ import app.model.Estado;
 import app.model.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,9 +23,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONString;
 
 /**
  *
@@ -48,75 +41,69 @@ public class CRUDController extends HttpServlet {
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
+     * @throws app.controller.exceptions.NonexistentEntityException
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, NonexistentEntityException, Exception {
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        Gson gson = new Gson();
+
         try (PrintWriter out = response.getWriter()) {
 
             EntityManagerFactory emf = (EntityManagerFactory) getServletContext().getAttribute("emf");
+            Gson gson = new GsonBuilder().create();
             
             String action = (String) request.getParameter("action");
-            List<User> lstUser = new ArrayList<>();
-          
+            List<User> lstUser = new UserJpaController(emf).findUserEntities(4, 1);
 
             switch (action) {
                 case "list":
+
                     try {
-                        
-                       lstUser = new UserJpaController(emf).findUserEntities();
-                        JsonElement element = gson.toJsonTree(lstUser, new TypeToken<List<User>>() {
-                        }.getType());
-                        
-                        JsonArray jsonArray = element.getAsJsonArray();
-                        String listData = jsonArray.toString();
 
-                        listData = "{\"Result\":\"OK\",\"Records\":" + listData + "}";
-                        response.getWriter().print(listData);
+                        JSONObject object = new JSONObject();
+                        for (User u : lstUser) {
+                            object.accumulate("userid", u.getCliente().getNrBi());
+                            object.accumulate("lastname", u.getLastName());
+                            object.accumulate("firstname", u.getName());
+                            object.accumulate("email", u.getEmail());
+                        }
+                      
+                        out.print(object);
 
-                    } catch (Exception e) {
-                        String error = "{\"Result\":\"ERROR\",\"Message\":" + e.getMessage() + "}";
+                    } catch (Exception ex) {
+                        String error = "{\"Result\":\"ERROR\",\"Message\":" + ex.getMessage() + "rjose" + "}";
                         response.getWriter().print(error);
+                        ex.printStackTrace();
                     }
 
-//                    try {
-//
-//                        json.put("Result", "OK");
-//                        //json.put("Records", lstUser);
-//                        
-////                         JSONArray array = new JSONArray();
-////        
-////        JSONObject user1 = new JSONObject();
-////        user1.put("name", "TOM");
-////        user1.put("age", "26");
-////        JSONObject user2 = new JSONObject();
-////        user2.put("name", "ASB");
-////        user2.put("age", "26");
-////        
-////        array.put(user1);
-////        array.put(user2);
-//
-//                        response.getWriter().write(array.toString());
-//
-//                    } catch (Exception ex) {
-//
-//                        response.getWriter().print("errpor");
-//                    }
                     break;
                 case "create":
+
+                    //Convert Java Object to Json				
+                    String json = gson.toJson(toString());
+                    //Return Json in the format required by jTable plugin
+                    String listData = "{\"Result\":\"OK\",\"Record\":" + json + "}";
+                    response.getWriter().print(listData);
                     break;
-                case "update":
                     
+                case "update":
+
                     Credito c = new CreditoJpaController(emf).findCredito(Integer.parseInt(request.getParameter("idcredito")));
                     c.setIdestado(new Estado(4L)); // 4L estado autorizado;
                     new CreditoJpaController(emf).edit(c);
+
+                    out.print("<div class=\"sufee-alert alert with-close alert-success alert-dismissible fade show\">\n"
+                            + "                                <span class=\"badge badge-pill badge-success\">Autorizado com sucesso</span></div>");
+
+                    break;
+
+                case "delete":
+                    String userid = (String) request.getParameter("userid");
                     
-                    out.print("<div class=\"sufee-alert alert with-close alert-success alert-dismissible fade show\">\n" +
-"                                <span class=\"badge badge-pill badge-success\">Autorizado com sucesso</span></div>");
-                
+                    listData = "{\"Result\":\"OK\"}";
+                    response.getWriter().print(listData);
                     break;
             }
         }
